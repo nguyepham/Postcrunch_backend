@@ -1,4 +1,4 @@
-package nguye.postcruch.backend;
+package nguye.postcrunch.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

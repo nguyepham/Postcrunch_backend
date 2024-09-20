@@ -1,0 +1,124 @@
+openapi: 3.1.0
+
+info:
+  title: Postcrunch
+  description: 'A social media platform where we crunch others post and share ours.'
+  version: 1.0.0
+  contact:
+    name: Nguyen Pham
+    email: nguyenminhpham24@gmail.com
+
+servers:
+  - url: https://github.com/nguyepham
+    description: Development server
+
+tags:
+  - name: newsfeed
+    description: CRUD operations with the newsfeed.
+  - name: post
+    description: CRUD operations with a post.
+  - name: comment
+    description: CRUD operations with a comment.
+
+paths:
+  /home:
+    get:
+      operationId: fetchDemo
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /api/v1/newsfeed:
+    get:
+      tags:
+        - newsfeed
+      description: Fetch the Postcrunch newsfeed.
+      operationId: getNewsfeed
+      responses:
+        200:
+          description: Fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Newsfeed'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Newsfeed'
+
+components:
+  schemas:
+    Newsfeed:
+      description: The Postcrunch newsfeed.
+      type: object
+      properties:
+        lastFetched:
+          description: The last time the newsfeed was fetched.
+          type: string
+          format: date-time
+        posts:
+          description: The list of posts on the newsfeed.
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+
+    Post:
+      description: A Postcrunch post.
+      type: object
+      properties:
+        id:
+          description: The post's id.
+          type: string
+        addedTIme:
+          description: The time the post was added.
+          type: string
+          format: date-time
+        content:
+          $ref: '#/components/schemas/Content'
+        votes:
+          description: List of up/down votes made on the post.
+          type: array
+          items:
+            $ref: '#/components/schemas/Vote'
+        comments:
+          description: List of comments made on the post.
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+
+    Content:
+      description: The content of a post.
+      type: object
+      properties:
+        text:
+          description: The text content of a post.
+          type: string
+
+    Vote:
+      description: A vote made on a post.
+      type: object
+      properties:
+        isUpVote:
+          description: Whether a vote is up vote or not.
+          type: boolean
+        addedTIme:
+          description: The time the voted was created.
+          type: string
+          format: date-time
+
+    Comment:
+      description: A comment made on a post.
+      type: object
+      properties:
+        id:
+          description: The comment's id.
+          type: string
+        content:
+          $ref: '#/components/schemas/Content'
+        votes:
+          description: List of up/down votes made on the comment.
+          type: array
+          items:
+            $ref: '#/components/schemas/Vote'
