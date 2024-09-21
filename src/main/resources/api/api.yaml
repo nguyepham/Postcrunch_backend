@@ -23,8 +23,9 @@ tags:
     description: CRUD operations with a comment.
 
 paths:
-  /home:
+  /api/v1/home:
     get:
+      description: The demo page.
       operationId: fetchDemo
       responses:
         200:
@@ -88,11 +89,11 @@ components:
           description: The last time the newsfeed was fetched.
           type: string
           format: date-time
-        posts:
-          description: The list of posts on the newsfeed.
+        contents:
+          description: The list of contents on the newsfeed.
           type: array
           items:
-            $ref: '#/components/schemas/Post'
+            $ref: '#/components/schemas/Content'
 
     Content:
       description: A content on the newsfeed (post or comment).
@@ -104,7 +105,11 @@ components:
         isAPost:
           description: Whether this content is a post or not.
           type: boolean
-        addedTIme:
+        numOfReports:
+          description: Whether this content is a post or not.
+          type: integer
+          format: int32
+        createdAt:
           description: The time the content was added.
           type: string
           format: date-time
@@ -149,7 +154,7 @@ components:
         isUpVote:
           description: Whether a vote is up vote or not.
           type: boolean
-        addedTIme:
+        createdAt:
           description: The time the voted was created.
           type: string
           format: date-time
@@ -161,7 +166,7 @@ components:
         isUpVote:
           description: Whether a vote is up vote or not.
           type: boolean
-        addedTIme:
+        createdAt:
           description: The time the report was created.
           type: string
           format: date-time
