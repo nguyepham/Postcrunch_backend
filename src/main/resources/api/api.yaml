@@ -13,6 +13,8 @@ servers:
     description: Development server
 
 tags:
+  - name: user
+    description: Sign up, sign in, Edit profile.
   - name: newsfeed
     description: CRUD operations with the newsfeed.
   - name: post
@@ -50,6 +52,34 @@ paths:
 
 components:
   schemas:
+    User:
+      description: A Postcrunch user.
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          description: The account's username used as the default display name.
+          type: string
+        name:
+          description: The display name of the user.
+          type: string
+        password:
+          description: The account's password.
+          type: string
+        email:
+          description: The user's email.
+          type: string
+          format: email
+        dateOfBirth:
+          description: The user's birthday.
+          type: string
+          format: date-time
+        gender:
+          description: The user's gender.
+          type: string
+
     Newsfeed:
       description: The Postcrunch newsfeed.
       type: object
@@ -64,37 +94,53 @@ components:
           items:
             $ref: '#/components/schemas/Post'
 
-    Post:
-      description: A Postcrunch post.
+    Content:
+      description: A content on the newsfeed (post or comment).
       type: object
       properties:
         id:
-          description: The post's id.
+          description: The comment's id.
           type: string
+        isAPost:
+          description: Whether this content is a post or not.
+          type: boolean
         addedTIme:
-          description: The time the post was added.
+          description: The time the content was added.
           type: string
           format: date-time
-        content:
-          $ref: '#/components/schemas/Content'
+        author:
+          description: The user who created the content.
+          $ref: '#/components/schemas/User'
         votes:
-          description: List of up/down votes made on the post.
+          description: List of up/down votes made on the content.
           type: array
           items:
             $ref: '#/components/schemas/Vote'
-        comments:
-          description: List of comments made on the post.
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-
-    Content:
-      description: The content of a post.
-      type: object
-      properties:
         text:
-          description: The text content of a post.
+          description: The text in the content.
           type: string
+
+    Post:
+      allOf:
+        - $ref: '#/components/schemas/Content'
+        - description: A Postcrunch post.
+          type: object
+          properties:
+            comments:
+              description: List of comments made on the post.
+              type: array
+              items:
+                $ref: '#/components/schemas/Comment'
+
+    Comment:
+      allOf:
+        - $ref: '#/components/schemas/Content'
+        - description: A comment made on a post.
+          type: object
+          properties:
+            target:
+              description: The target post of the comment.
+              $ref: '#/components/schemas/Post'
 
     Vote:
       description: A vote made on a post.
@@ -108,17 +154,17 @@ components:
           type: string
           format: date-time
 
-    Comment:
-      description: A comment made on a post.
+    Report:
+      description: A report made on a post or comment.
       type: object
       properties:
-        id:
-          description: The comment's id.
+        isUpVote:
+          description: Whether a vote is up vote or not.
+          type: boolean
+        addedTIme:
+          description: The time the report was created.
           type: string
-        content:
+          format: date-time
+        target:
+          description: The content which was reported.
           $ref: '#/components/schemas/Content'
-        votes:
-          description: List of up/down votes made on the comment.
-          type: array
-          items:
-            $ref: '#/components/schemas/Vote'
