@@ -14,7 +14,7 @@ servers:
 
 tags:
   - name: user
-    description: Sign up, sign in, Edit profile.
+    description: Everything about users and accounts.
   - name: newsfeed
     description: CRUD operations with the newsfeed.
   - name: post
@@ -23,6 +23,7 @@ tags:
     description: CRUD operations with a comment.
 
 paths:
+
   /api/v1/home:
     get:
       description: The demo page.
@@ -47,129 +48,167 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Newsfeed'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Newsfeed'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
 components:
+
+  responses:
+    Unauthorized:
+      description: Access token is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: The request resources not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      description: An unexpected error occurred on the server.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
   schemas:
     User:
-      description: A Postcrunch user.
       type: object
+      description: A Postcrunch user.
       required:
         - username
         - password
       properties:
         username:
+          type: string
           description: The account's username used as the default display name.
-          type: string
         name:
+          type: string
           description: The display name of the user.
-          type: string
         password:
+          type: string
           description: The account's password.
-          type: string
         email:
-          description: The user's email.
           type: string
+          description: The user's email.
           format: email
         dateOfBirth:
-          description: The user's birthday.
           type: string
+          description: The user's birthday.
           format: date-time
         gender:
-          description: The user's gender.
           type: string
+          description: The user's gender.
 
     Newsfeed:
-      description: The Postcrunch newsfeed.
       type: object
+      description: The Postcrunch newsfeed.
       properties:
         lastFetched:
-          description: The last time the newsfeed was fetched.
           type: string
+          description: The last time the newsfeed was fetched.
           format: date-time
         contents:
-          description: The list of contents on the newsfeed.
           type: array
+          description: The list of contents on the newsfeed.
           items:
             $ref: '#/components/schemas/Content'
 
     Content:
-      description: A content on the newsfeed (post or comment).
       type: object
+      description: A content on the newsfeed (post or comment).
       properties:
         id:
-          description: The comment's id.
           type: string
+          description: The comment's id.
         isAPost:
-          description: Whether this content is a post or not.
           type: boolean
-        numOfReports:
           description: Whether this content is a post or not.
+        numOfReports:
           type: integer
+          description: The number of times the content has been reported.
           format: int32
         createdAt:
-          description: The time the content was added.
           type: string
+          description: The time the content was added.
           format: date-time
         author:
           description: The user who created the content.
           $ref: '#/components/schemas/User'
         votes:
-          description: List of up/down votes made on the content.
           type: array
+          description: List of up/down votes made on the content.
           items:
             $ref: '#/components/schemas/Vote'
         text:
-          description: The text in the content.
           type: string
+          description: The text in the content.
 
     Post:
       allOf:
         - $ref: '#/components/schemas/Content'
-        - description: A Postcrunch post.
-          type: object
+        - type: object
+          description: A Postcrunch post.
           properties:
             comments:
-              description: List of comments made on the post.
               type: array
+              description: List of comments made on the post.
               items:
                 $ref: '#/components/schemas/Comment'
 
     Comment:
       allOf:
         - $ref: '#/components/schemas/Content'
-        - description: A comment made on a post.
-          type: object
+        - type: object
+          description: A comment made on a post.
           properties:
             target:
               description: The target post of the comment.
               $ref: '#/components/schemas/Post'
 
     Vote:
-      description: A vote made on a post.
       type: object
+      description: A vote made on a post.
       properties:
         isUpVote:
-          description: Whether a vote is up vote or not.
           type: boolean
+          description: Whether a vote is up vote or not.
         createdAt:
-          description: The time the voted was created.
           type: string
+          description: The time the voted was created.
           format: date-time
 
     Report:
-      description: A report made on a post or comment.
       type: object
+      description: A report made on a post or comment.
       properties:
-        isUpVote:
-          description: Whether a vote is up vote or not.
-          type: boolean
-        createdAt:
-          description: The time the report was created.
+        reason:
           type: string
+          description: The reason for reporting the content.
+        createdAt:
+          type: string
+          description: The time the report was created.
           format: date-time
         target:
           description: The content which was reported.
           $ref: '#/components/schemas/Content'
+
+    ErrorResponse:
+      type: object
+      description: The response of an invalid HTTP request.
+      properties:
+        message:
+          type: string
+          description: A human-readable message describing the error.
+        code:
+          type: integer
+          description: The HTTP status code.
+          format: int32
