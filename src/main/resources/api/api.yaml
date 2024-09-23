@@ -120,7 +120,8 @@ components:
           type: array
           description: The list of contents on the newsfeed.
           items:
-            $ref: '#/components/schemas/Content'
+            type: string
+            description: The id of the contents on newsfeed.
 
     Content:
       type: object
@@ -140,14 +141,19 @@ components:
           type: string
           description: The time the content was added.
           format: date-time
-        author:
-          description: The user who created the content.
-          $ref: '#/components/schemas/User'
+        updatedAt:
+          type: string
+          description: The last time the content was updated.
+          format: date-time
+        authorId:
+          description: The id of the user who created the content.
+          type: string
         votes:
           type: array
           description: List of up/down votes made on the content.
           items:
-            $ref: '#/components/schemas/Vote'
+            type: string
+            description: The id of the votes on the content.
         text:
           type: string
           description: The text in the content.
@@ -162,7 +168,8 @@ components:
               type: array
               description: List of comments made on the post.
               items:
-                $ref: '#/components/schemas/Comment'
+                type: string
+                description: The id of the comments on the post.
 
     Comment:
       allOf:
@@ -170,9 +177,9 @@ components:
         - type: object
           description: A comment made on a post.
           properties:
-            target:
-              description: The target post of the comment.
-              $ref: '#/components/schemas/Post'
+            targetId:
+              type: string
+              description: The id of the target post of the comment.
 
     Vote:
       type: object
@@ -185,6 +192,9 @@ components:
           type: string
           description: The time the voted was created.
           format: date-time
+        authorId:
+          description: The id of the user who created the vote.
+          type: string
 
     Report:
       type: object
@@ -197,9 +207,9 @@ components:
           type: string
           description: The time the report was created.
           format: date-time
-        target:
-          description: The content which was reported.
-          $ref: '#/components/schemas/Content'
+        targetId:
+          type: string
+          description: The id of the content which was reported.
 
     ErrorResponse:
       type: object
