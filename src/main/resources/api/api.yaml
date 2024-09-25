@@ -123,8 +123,7 @@ components:
           type: array
           description: The list of contents on the newsfeed.
           items:
-            type: string
-            description: The id of the contents on newsfeed.
+            $ref: '#/components/schemas/Content'
 
     Content:
       type: object
@@ -133,10 +132,13 @@ components:
         id:
           type: string
           description: The content's id.
-        isAPost:
-          type: boolean
-          description: Whether this content is a post or not.
-        numOfReports:
+        contentType:
+          type: string
+          description: The type of this content.
+          enum:
+            - POST
+            - COMMENT
+        numReports:
           type: integer
           description: The number of times the content has been reported.
           format: int32
@@ -147,19 +149,17 @@ components:
         updatedAt:
           type: string
           description: The last time the content was updated.
-          format: date-
+          format: date-time
         text:
           type: string
           description: The text in the content.
-        authorId:
-          description: The id of the user who created the content.
-          type: string
+        author:
+          $ref: '#/components/schemas/User'
         votes:
           type: array
           description: List of up/down votes made on the content.
           items:
-            type: string
-            description: The id of the votes on the content.
+            $ref: '#/components/schemas/Vote'
 
     Post:
       allOf:
@@ -171,8 +171,7 @@ components:
               type: array
               description: List of comments made on the post.
               items:
-                type: string
-                description: The id of the comments on the post.
+                $ref: '#/components/schemas/Comment'
 
     Comment:
       allOf:
@@ -180,9 +179,8 @@ components:
         - type: object
           description: A comment made on a post.
           properties:
-            targetId:
-              type: string
-              description: The id of the target post of the comment.
+            target:
+              $ref: '#/components/schemas/Post'
 
     Vote:
       type: object
@@ -191,19 +189,20 @@ components:
         id:
           type: string
           description: The vote's id.
-        isUpVote:
-          type: boolean
-          description: Whether a vote is up vote or not.
+        voteType:
+          type: string
+          description: The type of the vote.
+          enum:
+            - UP
+            - DOWN
         createdAt:
           type: string
           description: The time the voted was created.
           format: date-time
-        authorId:
-          description: The id of the user who created the vote.
-          type: string
-        targetId:
-          type: string
-          description: The id of the target post of the comment.
+        author:
+          $ref: '#/components/schemas/User'
+        target:
+          - $ref: '#/components/schemas/Content'
 
     Report:
       type: object
@@ -215,13 +214,17 @@ components:
         reason:
           type: string
           description: The reason for reporting the content.
+          enum:
+            - FRAUD
+            - ABUSE
+            - OFFENSIVE
+            - OTHER
         createdAt:
           type: string
           description: The time the report was created.
           format: date-time
-        targetId:
-          type: string
-          description: The id of the content which was reported.
+        target:
+          - $ref: '#/components/schemas/Content'
 
     ErrorResponse:
       type: object
