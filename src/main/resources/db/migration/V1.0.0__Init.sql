@@ -42,7 +42,9 @@ CREATE TABLE IF NOT EXISTS postcrunch.report (
     id CHAR(36) PRIMARY KEY NOT NULL,
     reason VARCHAR(16) NOT NULL DEFAULT 'OTHER',
     created_at DATETIME DEFAULT NOW(),
+    author_id CHAR(36),
     target_id CHAR(36) NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES user(id) ON DELETE SET NULL,
     FOREIGN KEY (target_id) REFERENCES content(id) ON DELETE CASCADE
 );
 

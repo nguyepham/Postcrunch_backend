@@ -21,6 +21,10 @@ tags:
     description: CRUD operations with a post.
   - name: comment
     description: CRUD operations with a comment.
+  - name: vote
+    description: CRUD operations with a vote.
+  - name: report
+    description: CRUD operations with a report.
 
 paths:
 
@@ -223,6 +227,8 @@ components:
           type: string
           description: The time the report was created.
           format: date-time
+        author:
+          $ref: '#/components/schemas/User'
         target:
           - $ref: '#/components/schemas/Content'
 
