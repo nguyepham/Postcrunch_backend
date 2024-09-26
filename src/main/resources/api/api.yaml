@@ -28,17 +28,6 @@ tags:
 
 paths:
 
-  /api/v1/home:
-    get:
-      description: The demo page.
-      operationId: fetchDemo
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                type: string
-
   /api/v1/newsfeed:
     get:
       tags:
@@ -49,6 +38,9 @@ paths:
         200:
           description: Fetched successfully.
           content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Newsfeed'
             application/json:
               schema:
                 $ref: '#/components/schemas/Newsfeed'
@@ -70,7 +62,7 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
 
     NotFound:
-      description: The request resources not found.
+      description: The requested resources not found.
       content:
         application/json:
           schema:
@@ -123,47 +115,80 @@ components:
           type: string
           description: The last time the newsfeed was fetched.
           format: date-time
-        contents:
+        posts:
           type: array
-          description: The list of contents on the newsfeed.
+          description: The list of posts on the newsfeed.
           items:
-            $ref: '#/components/schemas/Content'
+            $ref: '#/components/schemas/Post'
+        comments:
+          type: array
+          description: The list of comments on the newsfeed.
+          items:
+            $ref: '#/components/schemas/Comment'
 
-    Content:
+    NewContent:
       type: object
-      description: A content on the newsfeed (post or comment).
       properties:
-        id:
-          type: string
-          description: The content's id.
         contentType:
           type: string
           description: The type of this content.
           enum:
             - POST
             - COMMENT
-        numReports:
-          type: integer
-          description: The number of times the content has been reported.
-          format: int32
-        createdAt:
-          type: string
-          description: The time the content was added.
-          format: date-time
-        updatedAt:
-          type: string
-          description: The last time the content was updated.
-          format: date-time
         text:
           type: string
           description: The text in the content.
-        author:
-          $ref: '#/components/schemas/User'
-        votes:
-          type: array
-          description: List of up/down votes made on the content.
-          items:
-            $ref: '#/components/schemas/Vote'
+
+    AddPostReq:
+      allOf:
+        - $ref: '#/components/schemas/NewContent'
+        - type: object
+          properties:
+            authorId:
+              type: string
+              description: Info about the post's author wrapped in the request.
+
+    AddCommentReq:
+      allOf:
+        - $ref: '#/components/schemas/NewContent'
+        - type: object
+          properties:
+            authorId:
+              type: string
+              description: Info about the comment's author wrapped in the request.
+            targetId:
+              type: string
+              description: Info about the comment's target wrapped in the request.
+
+    Content:
+      allOf:
+        - $ref: '#/components/schemas/NewContent'
+        - type: object
+          description: A content on the newsfeed (post or comment).
+          properties:
+            id:
+              type: string
+              description: The content's id.
+            createdAt:
+              type: string
+              description: The time the content was added.
+              format: date-time
+            updatedAt:
+              type: string
+              description: The last time the content was updated.
+              format: date-time
+            author:
+              $ref: '#/components/schemas/User'
+            votes:
+              type: array
+              description: List of up/down votes made on the content.
+              items:
+                $ref: '#/components/schemas/Vote'
+            reports:
+              type: array
+              description: List of reports made on the content.
+              items:
+                $ref: '#/components/schemas/Report'
 
     Post:
       allOf:
