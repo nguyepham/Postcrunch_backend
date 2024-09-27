@@ -2,9 +2,10 @@ package nguye.postcrunch.backend.comment;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import nguye.postcrunch.backend.post.ContentEntity;
+import nguye.postcrunch.backend.newsfeed.ContentEntity;
 
 @Entity
+@DiscriminatorValue("COMMENT")
 @Table(name = "comment", schema = "postcrunch")
 @Getter
 public class CommentEntity extends ContentEntity {
@@ -14,10 +15,12 @@ public class CommentEntity extends ContentEntity {
   private ContentEntity target;
 
   // Public no-arg constructor
-  public CommentEntity() {}
+  public CommentEntity() {
+  }
 
   // Constructor with non-nullable fields
   public CommentEntity(ContentEntity target) {
+    super("COMMENT");
     this.target = target;
   }
 }

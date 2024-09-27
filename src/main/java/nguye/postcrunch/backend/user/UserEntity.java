@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import nguye.postcrunch.backend.post.ContentEntity;
+import nguye.postcrunch.backend.newsfeed.ContentEntity;
 import nguye.postcrunch.backend.report.ReportEntity;
 import nguye.postcrunch.backend.vote.VoteEntity;
 
@@ -27,8 +27,12 @@ public class UserEntity {
   private String password;
 
   @Setter
-  @Column(name = "NAME", length = 28)
-  private String name;
+  @Column(name = "FIRST_NAME", length = 28)
+  private String firstName;
+
+  @Setter
+  @Column(name = "LAST_NAME", length = 28)
+  private String lastName;
 
   @Setter
   @Column(name = "EMAIL", length = 24)
@@ -55,7 +59,8 @@ public class UserEntity {
   private List<ReportEntity> reports;
 
   // Public no-arg constructor
-  public UserEntity() {}
+  public UserEntity() {
+  }
 
   // Constructor with non-nullable fields
   public UserEntity(String username, String password) {

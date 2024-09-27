@@ -3,8 +3,8 @@ package nguye.postcrunch.backend.report;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import nguye.postcrunch.backend.newsfeed.ContentEntity;
 import nguye.postcrunch.backend.user.UserEntity;
-import nguye.postcrunch.backend.post.ContentEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,7 +34,8 @@ public class ReportEntity {
   private ContentEntity target;
 
   // Public no-arg constructor
-  public ReportEntity() {}
+  public ReportEntity() {
+  }
 
   // Constructor with non-nullable fields
   public ReportEntity(String reason, ContentEntity target) {

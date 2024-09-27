@@ -28,22 +28,27 @@ tags:
 
 paths:
 
-  /api/v1/newsfeed:
+  /api/v1/posts/{id}:
     get:
       tags:
-        - newsfeed
-      description: Fetch the Postcrunch newsfeed.
-      operationId: getNewsfeed
+        - post
+      description: Get a post's details.
+      operationId: getPostById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         200:
-          description: Fetched successfully.
+          description: Fetch successfully.
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Newsfeed'
             application/json:
               schema:
-                $ref: '#/components/schemas/Newsfeed'
+                $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/responses/BadRequest'
         401:
           $ref: '#/components/responses/Unauthorized'
         404:
@@ -54,6 +59,13 @@ paths:
 components:
 
   responses:
+    BadRequest:
+      description: There are problems with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
     Unauthorized:
       description: Access token is missing or invalid.
       content:
@@ -92,7 +104,10 @@ components:
         password:
           type: string
           description: The account's password.
-        name:
+        first_name:
+          type: string
+          description: The display name of the user.
+        last_name:
           type: string
           description: The display name of the user.
         email:
@@ -106,28 +121,46 @@ components:
         gender:
           type: string
           description: The user's gender.
+        contents:
+          type: array
+          description: The list of contents created by the user.
+          items:
+            type: string
+            description: The id of the content created by the user.
+        votes:
+          type: array
+          description: The list of votes created by the user.
+          items:
+            type: string
+            description: The id of the vote created by the user.
+        report:
+          type: array
+          description: The list of reports created by the user.
+          items:
+            type: string
+            description: The id of the report created by the user.
 
     Newsfeed:
       type: object
       description: The Postcrunch newsfeed.
       properties:
-        lastFetched:
-          type: string
-          description: The last time the newsfeed was fetched.
-          format: date-time
         posts:
           type: array
           description: The list of posts on the newsfeed.
           items:
-            $ref: '#/components/schemas/Post'
+            type: string
+            description: The id of the post in the list.
         comments:
           type: array
           description: The list of comments on the newsfeed.
           items:
-            $ref: '#/components/schemas/Comment'
+            type: string
+            description: The id of the comment in the list.
 
     NewContent:
       type: object
+      required:
+        - contentType
       properties:
         contentType:
           type: string
@@ -171,24 +204,33 @@ components:
               description: The content's id.
             createdAt:
               type: string
-              description: The time the content was added.
+              description: The time the content was created.
               format: date-time
             updatedAt:
               type: string
               description: The last time the content was updated.
               format: date-time
             author:
-              $ref: '#/components/schemas/User'
+              type: string
+              description: The id of the content's author.
             votes:
               type: array
-              description: List of up/down votes made on the content.
+              description: List of votes made on the content.
               items:
-                $ref: '#/components/schemas/Vote'
+                type: string
+                description: The id of the vote in the list.
+            comments:
+              type: array
+              description: List of comments made on a content.
+              items:
+                type: string
+                description: The id of the comment in the list.
             reports:
               type: array
               description: List of reports made on the content.
               items:
-                $ref: '#/components/schemas/Report'
+                type: string
+                description: The id of the report in the list.
 
     Post:
       allOf:
@@ -196,24 +238,26 @@ components:
         - type: object
           description: A Postcrunch post.
           properties:
-            comments:
-              type: array
-              description: List of comments made on the post.
-              items:
-                $ref: '#/components/schemas/Comment'
+            title:
+              type: string
+              description: The title of the post.
 
     Comment:
       allOf:
         - $ref: '#/components/schemas/Content'
         - type: object
-          description: A comment made on a post.
+          description: A comment made on a content.
           properties:
             target:
-              $ref: '#/components/schemas/Post'
+              type: string
+              description: The id of the targeted content.
 
     Vote:
       type: object
       description: A vote made on a post.
+      required:
+        - author
+        - target
       properties:
         id:
           type: string
@@ -229,13 +273,18 @@ components:
           description: The time the voted was created.
           format: date-time
         author:
-          $ref: '#/components/schemas/User'
+          type: string
+          description: The id of the vote's author.
         target:
-          - $ref: '#/components/schemas/Content'
+          type: string
+          description: The id of the vote's targeted content.
 
     Report:
       type: object
       description: A report made on a post or comment.
+      required:
+        - author
+        - target
       properties:
         id:
           type: string
@@ -244,18 +293,20 @@ components:
           type: string
           description: The reason for reporting the content.
           enum:
+            - SPAM
             - FRAUD
-            - ABUSE
-            - OFFENSIVE
+            - INAPPROPRIATE
             - OTHER
         createdAt:
           type: string
           description: The time the report was created.
           format: date-time
         author:
-          $ref: '#/components/schemas/User'
+          type: string
+          description: The id of the report's author.
         target:
-          - $ref: '#/components/schemas/Content'
+          type: string
+          description: The id of the report's targeted content.
 
     ErrorResponse:
       type: object

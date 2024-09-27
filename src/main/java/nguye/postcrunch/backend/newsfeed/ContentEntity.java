@@ -1,4 +1,4 @@
-package nguye.postcrunch.backend.post;
+package nguye.postcrunch.backend.newsfeed;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,26 +14,26 @@ import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "CONTENT_TYPE", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "content", schema = "postcrunch")
 @Getter
-public class ContentEntity {
+public abstract class ContentEntity {
 
   @Id
   @Column(name = "ID", nullable = false, updatable = false)
   private final String id = UUID.randomUUID().toString();
 
-  @Column(name = "CONTENT_TYPE", nullable = false, length = 10)
+  @Column(name = "CONTENT_TYPE", insertable = false, updatable = false, nullable = false, length = 10)
   private String contentType;
-
-  @Column(name = "NUM_REPORTS", columnDefinition = "INTEGER UNSIGNED", nullable = false)
-  private int numReports = 0;
 
   @Column(name = "CREATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")
   private final LocalDateTime createdAt = LocalDateTime.now();
 
+  @Setter
   @Column(name = "UPDATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT NOW() ON UPDATE NOW()")
-  private LocalDateTime updatedAt = LocalDateTime.now();
+  private LocalDateTime updatedAt = createdAt;
 
+  @Setter
   @Column(name = "TEXT", length = 3000)
   private String text;
 
@@ -48,14 +48,15 @@ public class ContentEntity {
 
   @Setter
   @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
-  private List<ReportEntity> reports;
-
-  @Setter
-  @Transient
   private List<CommentEntity> comments;
 
+  @Setter
+  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+  private List<ReportEntity> reports;
+
   // Public no-arg constructor
-  public ContentEntity() {}
+  public ContentEntity() {
+  }
 
   // Constructor with non-nullable fields
   public ContentEntity(String contentType) {
