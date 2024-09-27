@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import nguye.postcrunch.backend.newsfeed.ContentEntity;
+import nguye.postcrunch.backend.post.PostEntity;
 import nguye.postcrunch.backend.report.ReportEntity;
 import nguye.postcrunch.backend.vote.VoteEntity;
 
@@ -42,7 +42,7 @@ public class UserEntity {
   private String gender;
 
   @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private List<ContentEntity> contents;
+  private List<PostEntity> posts;
 
   @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
   private List<VoteEntity> votes;

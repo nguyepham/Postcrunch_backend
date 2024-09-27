@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS postcrunch.content (
 
 CREATE TABLE IF NOT EXISTS postcrunch.post (
     id CHAR(36) PRIMARY KEY NOT NULL,
-    title VARCHAR(150),
+    title VARCHAR(150) NOT NULL DEFAULT 'No Title',
     FOREIGN KEY (id) REFERENCES content(id) ON DELETE CASCADE
 );
 
