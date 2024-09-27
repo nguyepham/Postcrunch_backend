@@ -27,8 +27,92 @@ tags:
     description: CRUD operations with a report.
 
 paths:
+  /api/v1/users/{id}:
+
+    get:
+      tags:
+        - user
+      description: Get a user's details.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - user
+      description: Edit user profile.
+      operationId: updateUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Update successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - user
+      description: Delete an account.
+      operationId: deleteUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Delete successfully.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/posts/{id}:
+
     get:
       tags:
         - post
@@ -121,24 +205,6 @@ components:
         gender:
           type: string
           description: The user's gender.
-        contents:
-          type: array
-          description: The list of contents created by the user.
-          items:
-            type: string
-            description: The id of the content created by the user.
-        votes:
-          type: array
-          description: The list of votes created by the user.
-          items:
-            type: string
-            description: The id of the vote created by the user.
-        report:
-          type: array
-          description: The list of reports created by the user.
-          items:
-            type: string
-            description: The id of the report created by the user.
 
     Newsfeed:
       type: object
