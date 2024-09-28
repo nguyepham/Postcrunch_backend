@@ -1,5 +1,7 @@
 package nguye.postcrunch.backend.user;
 
+import nguye.postcrunch.backend.AppUtil;
+import nguye.postcrunch.backend.model.Post;
 import nguye.postcrunch.backend.model.User;
 import nguye.postcrunch.backend.post.PostRepresentationModelAssembler;
 import nguye.postcrunch.backend.post.PostService;
@@ -28,8 +30,10 @@ public class UserRepresentationModelAssembler extends
   @Override
   public User toModel(UserEntity entity) {
     User resource = new User();
-
     resource.add(linkTo(methodOn(UserController.class).getUserById(entity.getId())).withSelfRel());
+    List<Post> posts = postRepresentationModelAssembler.toListModel(
+        postService.getPostsByAuthorId(entity.getId()).orElse(List.of())
+    );
 
     return resource
         .id(entity.getId())
@@ -40,8 +44,6 @@ public class UserRepresentationModelAssembler extends
         .email(entity.getEmail())
         .dob(entity.getDob())
         .gender(entity.getGender())
-        .posts(postRepresentationModelAssembler.toListModel(
-            postService.getPostsByAuthorId(entity.getId()).orElse(List.of())
-        ));
+        .posts(AppUtil.extractPreview(posts));
   }
 }

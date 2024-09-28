@@ -172,6 +172,24 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
 
   schemas:
+
+    AuthorInfo:
+      type: object
+      description: Info about the author of a content.
+      properties:
+        id:
+          type: string
+          description: The author's id.
+        username:
+          type: string
+          description: The account's username used as the default display name.
+        first_name:
+          type: string
+          description: The display name of the author.
+        last_name:
+          type: string
+          description: The display name of the author.
+
     User:
       type: object
       description: Info about a Postcrunch user.
@@ -209,7 +227,7 @@ components:
           type: array
           description: The list of posts created by the user.
           items:
-            $ref: '#/components/schemas/Post'
+            $ref: '#/components/schemas/PostPreview'
 
     Newsfeed:
       type: object
@@ -282,8 +300,7 @@ components:
               description: The last time the content was updated.
               format: date-time
             author:
-              type: string
-              description: The id of the content's author.
+              $ref: '#/components/schemas/AuthorInfo'
             votes:
               type: array
               description: List of votes made on the content.
@@ -302,6 +319,27 @@ components:
               items:
                 type: string
                 description: The id of the report in the list.
+
+    PostPreview:
+      type: object
+      description: The preview of a Postcrunch post.
+      properties:
+        id:
+          type: string
+          description: The post's id.
+        createdAt:
+          type: string
+          description: The time the post was created.
+          format: date-time
+        updatedAt:
+          type: string
+          description: The last time the post was updated.
+          format: date-time
+        author:
+          $ref: '#/components/schemas/AuthorInfo'
+        title:
+          type: string
+          description: The title of the post.
 
     Post:
       allOf:
@@ -344,11 +382,9 @@ components:
           description: The time the voted was created.
           format: date-time
         author:
-          type: string
-          description: The id of the vote's author.
+          $ref: '#/components/schemas/AuthorInfo'
         target:
-          type: string
-          description: The id of the vote's targeted content.
+          $ref: '#/components/schemas/Content'
 
     Report:
       type: object
@@ -373,11 +409,9 @@ components:
           description: The time the report was created.
           format: date-time
         author:
-          type: string
-          description: The id of the report's author.
+          $ref: '#/components/schemas/AuthorInfo'
         target:
-          type: string
-          description: The id of the report's targeted content.
+          $ref: '#/components/schemas/Content'
 
     ErrorResponse:
       type: object

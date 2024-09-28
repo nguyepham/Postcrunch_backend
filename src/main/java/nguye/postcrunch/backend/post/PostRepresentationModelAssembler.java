@@ -1,5 +1,6 @@
 package nguye.postcrunch.backend.post;
 
+import nguye.postcrunch.backend.AppUtil;
 import nguye.postcrunch.backend.model.Post;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,6 @@ public class PostRepresentationModelAssembler extends
   @Override
   public Post toModel(PostEntity entity) {
     Post resource = new Post();
-
     resource.add(linkTo(methodOn(PostController.class).getPostById(entity.getId())).withSelfRel());
 
     return resource
@@ -32,7 +32,7 @@ public class PostRepresentationModelAssembler extends
         .contentType(Post.ContentTypeEnum.valueOf(entity.getContentType()))
         .createdAt(Timestamp.valueOf(entity.getCreatedAt()))
         .updatedAt(Timestamp.valueOf(entity.getUpdatedAt()))
-        .author(entity.getAuthor().getId())
+        .author(AppUtil.extractAuthorInfo(entity.getAuthor()))
         .title(entity.getTitle())
         .text(entity.getText());
   }
