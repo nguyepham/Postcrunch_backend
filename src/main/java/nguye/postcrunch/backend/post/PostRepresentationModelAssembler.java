@@ -5,7 +5,6 @@ import nguye.postcrunch.backend.model.Post;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
@@ -30,11 +29,13 @@ public class PostRepresentationModelAssembler extends
     return resource
         .id(entity.getId())
         .contentType(Post.ContentTypeEnum.valueOf(entity.getContentType()))
-        .createdAt(Timestamp.valueOf(entity.getCreatedAt()))
-        .updatedAt(Timestamp.valueOf(entity.getUpdatedAt()))
+        .createdAt(entity.getCreatedAt())
+        .updatedAt(entity.getUpdatedAt())
         .author(AppUtil.extractAuthorInfo(entity.getAuthor()))
         .title(entity.getTitle())
-        .text(entity.getText());
+        .text(entity.getText())
+        .numVotes(entity.getNumVotes())
+        .numReports(entity.getNumReports());
   }
 
   public List<Post> toListModel(Iterable<PostEntity> entities) {

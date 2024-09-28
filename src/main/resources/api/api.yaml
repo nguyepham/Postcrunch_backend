@@ -108,6 +108,62 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /api/v1/posts:
+
+    post:
+      tags:
+        - post
+      description: Create new post.
+      operationId: createPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPostReq'
+      responses:
+        201:
+          description: Create successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - post
+      description: Edit post info.
+      operationId: updatePost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostPreview'
+      responses:
+        200:
+          description: Update successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /api/v1/post/{id}:
 
     get:
@@ -128,6 +184,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - post
+      description: Delete a post.
+      operationId: deletePostById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Delete successfully.
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -243,14 +322,15 @@ components:
     NewContent:
       type: object
       required:
-        - contentType
+        - authorId
       properties:
-        contentType:
+        createdAt:
           type: string
-          description: The type of this content.
-          enum:
-            - POST
-            - COMMENT
+          description: The time the content was created.
+          format: date-time
+        authorId:
+          type: string
+          description: Info about the content's author wrapped in the request.
         text:
           type: string
           description: The text in the content.
@@ -260,63 +340,65 @@ components:
         - $ref: '#/components/schemas/NewContent'
         - type: object
           properties:
-            authorId:
+            title:
               type: string
-              description: Info about the post's author wrapped in the request.
+              description: The title of the post.
 
     AddCommentReq:
       allOf:
         - $ref: '#/components/schemas/NewContent'
         - type: object
           properties:
-            authorId:
-              type: string
-              description: Info about the comment's author wrapped in the request.
             targetId:
               type: string
               description: Info about the comment's target wrapped in the request.
 
     Content:
-      allOf:
-        - $ref: '#/components/schemas/NewContent'
-        - type: object
-          description: A content on the newsfeed (post or comment).
-          properties:
-            id:
-              type: string
-              description: The content's id.
-            createdAt:
-              type: string
-              description: The time the content was created.
-              format: date-time
-            updatedAt:
-              type: string
-              description: The last time the content was updated.
-              format: date-time
-            author:
-              $ref: '#/components/schemas/AuthorInfo'
-            votes:
-              type: array
-              description: List of votes made on the content.
-              items:
-                type: string
-                description: The id of the vote in the list.
-            comments:
-              type: array
-              description: List of comments made on a content.
-              items:
-                type: string
-                description: The id of the comment in the list.
-            reports:
-              type: array
-              description: List of reports made on the content.
-              items:
-                type: string
-                description: The id of the report in the list.
+      type: object
+      description: A content on the newsfeed (post or comment).
+      properties:
+        id:
+          type: string
+          description: The content's id.
+        contentType:
+          type: string
+          description: The type of this content.
+          enum:
+            - POST
+            - COMMENT
+        createdAt:
+          type: string
+          description: The time the content was created.
+          format: date-time
+        updatedAt:
+          type: string
+          description: The last time the content was updated.
+          format: date-time
+        author:
+          $ref: '#/components/schemas/AuthorInfo'
+        text:
+          type: string
+          description: The text in the content.
+        numVotes:
+          type: integer
+          description: The number of votes made on the content.
+          format: int32
+        numReports:
+          type: integer
+          description: The number of reports made on the content.
+          format: int32
+        comments:
+          type: array
+          description: List of comments made on a content.
+          items:
+            type: string
+            description: The id of the comment in the list.
 
     PostPreview:
       type: object
       description: The preview of a Postcrunch post.
+      required:
+        - updatedAt
       properties:
         id:
           type: string
@@ -329,11 +411,12 @@ components:
           type: string
           description: The last time the post was updated.
           format: date-time
-        author:
-          $ref: '#/components/schemas/AuthorInfo'
         title:
           type: string
           description: The title of the post.
+        text:
+          type: string
+          description: The text in the content.
 
     Post:
       allOf:

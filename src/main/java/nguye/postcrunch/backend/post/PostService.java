@@ -7,5 +7,9 @@ public interface PostService {
 
   Optional<PostEntity> getPostById(String id);
 
+  PostEntity savePost(PostEntity entity);
+
+  void deletePostById(String id);
+
   Optional<List<PostEntity>> getPostsByAuthorId(String authorId);
 }

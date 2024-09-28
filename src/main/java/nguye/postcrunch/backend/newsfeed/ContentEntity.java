@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import nguye.postcrunch.backend.comment.CommentEntity;
-import nguye.postcrunch.backend.report.ReportEntity;
 import nguye.postcrunch.backend.user.UserEntity;
-import nguye.postcrunch.backend.vote.VoteEntity;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,32 +27,29 @@ public abstract class ContentEntity {
   private String contentType;
 
   @Column(name = "CREATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")
-  private final LocalDateTime createdAt = LocalDateTime.now();
+  private final Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
 
   @Setter
   @Column(name = "UPDATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT NOW() ON UPDATE NOW()")
-  private LocalDateTime updatedAt = createdAt;
+  private Timestamp updatedAt = createdAt;
 
   @Setter
   @Column(name = "TEXT", length = 3000)
   private String text;
+
+  @Column(name = "NUM_VOTES")
+  private int numVotes;
+
+  @Column(name = "NUM_REPORTS")
+  private int numReports;
 
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
   private UserEntity author;
 
-  @Setter
   @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
-  private List<VoteEntity> votes;
-
-  @Setter
-  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
-  private List<CommentEntity> comments;
-
-  @Setter
-  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
-  private List<ReportEntity> reports;
+  private final List<CommentEntity> comments = new ArrayList<>();
 
   // Public no-arg constructor
   public ContentEntity() {
@@ -61,5 +58,13 @@ public abstract class ContentEntity {
   // Constructor with non-nullable fields
   public ContentEntity(String contentType) {
     this.contentType = contentType;
+  }
+
+  public void addVote() {
+    this.numVotes++;
+  }
+
+  public void addReport() {
+    this.numReports++;
   }
 }

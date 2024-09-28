@@ -20,6 +20,16 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
+  public PostEntity savePost(PostEntity entity) {
+    return repository.save(entity);
+  }
+
+  @Override
+  public void deletePostById(String id) {
+    repository.deleteById(id);
+  }
+
+  @Override
   public Optional<List<PostEntity>> getPostsByAuthorId(String authorId) {
     return repository.getPostsByAuthorId(authorId);
   }

@@ -16,8 +16,10 @@ CREATE TABLE IF NOT EXISTS postcrunch.content (
     content_type VARCHAR(10) NOT NULL,
     created_at DATETIME DEFAULT NOW(),
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    text VARCHAR(3000),
     author_id CHAR(36),
+    text VARCHAR(3000),
+    num_votes INTEGER UNSIGNED DEFAULT 0,
+    num_reports INTEGER UNSIGNED DEFAULT 0,
     FOREIGN KEY (author_id) REFERENCES user(id) ON DELETE SET NULL
 );
 
@@ -81,11 +83,11 @@ INSERT INTO postcrunch.post (id, title) VALUES
 
 -- Seeding comments (content_type = 'COMMENT')
 INSERT INTO postcrunch.content (id, content_type, text, author_id) VALUES
-    ('1a2b3c4d-1111-5678-9101-112131415161', 'comment', 'Great post, Alice!', '2a2b3c4d-2234-5678-9101-112131415162'),
-    ('2a2b3c4d-2222-5678-9101-112131415162', 'comment', 'I totally agree, Bob!', '1a2b3c4d-1234-5678-9101-112131415161'),
-    ('3a2b3c4d-3333-5678-9101-112131415163', 'comment', 'Nice review, Charlie.', '5a2b3c4d-5234-5678-9101-112131415165'),
-    ('4a2b3c4d-4444-5678-9101-112131415164', 'comment', 'This is inspiring, Diana!', '3a2b3c4d-3234-5678-9101-112131415163'),
-    ('5a2b3c4d-5555-5678-9101-112131415165', 'comment', 'Eve, I\'ll try this recipe!', '4a2b3c4d-4234-5678-9101-112131415164');
+    ('1a2b3c4d-1111-5678-9101-112131415161', 'COMMENT', 'Great post, Alice!', '2a2b3c4d-2234-5678-9101-112131415162'),
+    ('2a2b3c4d-2222-5678-9101-112131415162', 'COMMENT', 'I totally agree, Bob!', '1a2b3c4d-1234-5678-9101-112131415161'),
+    ('3a2b3c4d-3333-5678-9101-112131415163', 'COMMENT', 'Nice review, Charlie.', '5a2b3c4d-5234-5678-9101-112131415165'),
+    ('4a2b3c4d-4444-5678-9101-112131415164', 'COMMENT', 'This is inspiring, Diana!', '3a2b3c4d-3234-5678-9101-112131415163'),
+    ('5a2b3c4d-5555-5678-9101-112131415165', 'COMMENT', 'Eve, I\'ll try this recipe!', '4a2b3c4d-4234-5678-9101-112131415164');
 
 INSERT INTO postcrunch.comment (id, target_id) VALUES
     ('1a2b3c4d-1111-5678-9101-112131415161', '1a2b3c4d-aaaa-5678-9101-112131415161'),

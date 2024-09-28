@@ -3,8 +3,8 @@ package nguye.postcrunch.backend.user;
 import nguye.postcrunch.backend.api.UserApi;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
@@ -28,40 +28,43 @@ public class UserController implements UserApi {
   }
 
   @Override
-  public ResponseEntity<User> updateUser(@RequestBody User updateUser) {
-    UserEntity entity = service.getUserById(updateUser.getId()).orElseThrow(ResourceNotFoundException::new);
+  public ResponseEntity<User> updateUser(User updatedUser) {
 
-    if (Objects.nonNull(updateUser.getUsername())) {
-      entity.setUsername(updateUser.getUsername());
+    if (Objects.isNull(updatedUser.getId())) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    UserEntity entity = service.getUserById(updatedUser.getId()).orElseThrow(ResourceNotFoundException::new);
+
+    if (Objects.nonNull(updatedUser.getUsername())) {
+      entity.setUsername(updatedUser.getUsername());
     }
 
-    if (Objects.nonNull(updateUser.getPassword())) {
-      entity.setPassword(updateUser.getPassword());
+    if (Objects.nonNull(updatedUser.getPassword())) {
+      entity.setPassword(updatedUser.getPassword());
     }
 
-    if (Objects.nonNull(updateUser.getFirstName())) {
-      entity.setFirstName(updateUser.getFirstName());
+    if (Objects.nonNull(updatedUser.getFirstName())) {
+      entity.setFirstName(updatedUser.getFirstName());
     }
 
-    if (Objects.nonNull(updateUser.getLastName())) {
-      entity.setLastName(updateUser.getLastName());
+    if (Objects.nonNull(updatedUser.getLastName())) {
+      entity.setLastName(updatedUser.getLastName());
     }
 
-    if (Objects.nonNull(updateUser.getEmail())) {
-      entity.setEmail(updateUser.getEmail());
+    if (Objects.nonNull(updatedUser.getEmail())) {
+      entity.setEmail(updatedUser.getEmail());
     }
 
-    if (Objects.nonNull(updateUser.getDob())) {
-      // Assuming updateUser.getDob() returns a Date or a Timestamp object
-      entity.setDob(new Date(updateUser.getDob().getTime()));
+    if (Objects.nonNull(updatedUser.getDob())) {
+      // Assuming updatedUser.getDob() returns a Date or a Timestamp object
+      entity.setDob(new Date(updatedUser.getDob().getTime()));
     }
 
-    if (Objects.nonNull(updateUser.getGender())) {
-      entity.setGender(updateUser.getGender());
+    if (Objects.nonNull(updatedUser.getGender())) {
+      entity.setGender(updatedUser.getGender());
     }
 
-    UserEntity savedUser = service.updateUser(entity);
-    return ResponseEntity.ok(assembler.toModel(savedUser));
+    return ResponseEntity.ok(assembler.toModel(service.updateUser(entity)));
   }
 
   @Override

@@ -38,8 +38,8 @@ public class AppUtil {
           .id(post.getId())
           .createdAt(post.getCreatedAt())
           .updatedAt(post.getUpdatedAt())
-          .author(post.getAuthor())
-          .title(post.getTitle());
+          .title(post.getTitle())
+          .text(post.getText());
       previews.add(preview);
     });
 
