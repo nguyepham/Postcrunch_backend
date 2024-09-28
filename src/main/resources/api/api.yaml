@@ -27,6 +27,35 @@ tags:
     description: CRUD operations with a report.
 
 paths:
+  /api/v1/users:
+
+    put:
+      tags:
+        - user
+      description: Edit user info.
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Update successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /api/v1/user/{id}:
 
     get:
@@ -43,38 +72,6 @@ paths:
       responses:
         200:
           description: Fetch successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-
-    put:
-      tags:
-        - user
-      description: Edit user profile.
-      operationId: updateUserById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        200:
-          description: Update successfully.
           content:
             application/json:
               schema:
@@ -183,19 +180,16 @@ components:
         username:
           type: string
           description: The account's username used as the default display name.
-        first_name:
+        firstName:
           type: string
           description: The display name of the author.
-        last_name:
+        lastName:
           type: string
           description: The display name of the author.
 
     User:
       type: object
       description: Info about a Postcrunch user.
-      required:
-        - username
-        - password
       properties:
         id:
           type: string
@@ -206,10 +200,10 @@ components:
         password:
           type: string
           description: The account's password.
-        first_name:
+        firstName:
           type: string
           description: The display name of the user.
-        last_name:
+        lastName:
           type: string
           description: The display name of the user.
         email:
@@ -417,10 +411,13 @@ components:
       type: object
       description: The response of an invalid HTTP request.
       properties:
+        errorCode:
+          type: string
+          description: An application-specific code of the error.
         message:
           type: string
           description: A human-readable message describing the error.
-        code:
+        httpStatus:
           type: integer
           description: The HTTP status code.
           format: int32

@@ -17,4 +17,14 @@ public class UserServiceImpl implements UserService {
   public Optional<UserEntity> getUserById(String id) {
     return repository.findById(id);
   }
+
+  @Override
+  public UserEntity updateUser(UserEntity entity) {
+    return repository.save(entity);
+  }
+
+  @Override
+  public void deleteUserById(String id) {
+    repository.deleteById(id);
+  }
 }
