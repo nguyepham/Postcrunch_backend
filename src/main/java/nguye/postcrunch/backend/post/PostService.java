@@ -1,15 +1,19 @@
 package nguye.postcrunch.backend.post;
 
+import nguye.postcrunch.backend.model.NewPost;
+import nguye.postcrunch.backend.model.PostPreview;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface PostService {
 
-  Optional<PostEntity> getPostById(String id);
+  PostEntity createPost(NewPost newPost);
 
-  PostEntity savePost(PostEntity entity);
+  PostEntity getPostById(String id);
+
+  PostEntity updatePost(PostPreview updatedPost);
 
   void deletePostById(String id);
 
-  Optional<List<PostEntity>> getPostsByAuthorId(String authorId);
+  List<PostEntity> getPostsByAuthorId(String authorId);
 }

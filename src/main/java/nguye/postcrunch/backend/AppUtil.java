@@ -1,8 +1,7 @@
 package nguye.postcrunch.backend;
 
-import nguye.postcrunch.backend.model.AuthorInfo;
-import nguye.postcrunch.backend.model.Post;
-import nguye.postcrunch.backend.model.PostPreview;
+import nguye.postcrunch.backend.comment.CommentController;
+import nguye.postcrunch.backend.model.*;
 import nguye.postcrunch.backend.post.PostController;
 import nguye.postcrunch.backend.user.UserController;
 import nguye.postcrunch.backend.user.UserEntity;
@@ -29,7 +28,7 @@ public class AppUtil {
         .lastName(entity.getLastName());
   }
 
-  public static List<PostPreview> extractPreview(List<Post> posts) {
+  public static List<PostPreview> toPostPreview(List<Post> posts) {
     List<PostPreview> previews = new ArrayList<>();
 
     posts.forEach(post -> {
@@ -38,8 +37,34 @@ public class AppUtil {
           .id(post.getId())
           .createdAt(post.getCreatedAt())
           .updatedAt(post.getUpdatedAt())
+          .author(post.getAuthor())
+          .edited(post.getEdited())
           .title(post.getTitle())
-          .text(post.getText());
+          .text(post.getText())
+          .numUpVotes(post.getNumUpVotes())
+          .numDownVotes(post.getNumDownVotes())
+          .numComments(post.getNumComments());
+      previews.add(preview);
+    });
+
+    return previews;
+  }
+
+  public static List<CommentPreview> toCommentPreview(List<Comment> comments) {
+    List<CommentPreview> previews = new ArrayList<>();
+
+    comments.forEach(comment -> {
+      CommentPreview preview = new CommentPreview()
+          .add(linkTo(methodOn(CommentController.class).getCommentById(comment.getId())).withSelfRel())
+          .id(comment.getId())
+          .createdAt(comment.getCreatedAt())
+          .updatedAt(comment.getUpdatedAt())
+          .author(comment.getAuthor())
+          .edited(comment.getEdited())
+          .text(comment.getText())
+          .numUpVotes(comment.getNumUpVotes())
+          .numDownVotes(comment.getNumDownVotes())
+          .numComments(comment.getNumComments());
       previews.add(preview);
     });
 

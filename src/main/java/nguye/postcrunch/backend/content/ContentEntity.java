@@ -1,10 +1,12 @@
-package nguye.postcrunch.backend.newsfeed;
+package nguye.postcrunch.backend.content;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import nguye.postcrunch.backend.comment.CommentEntity;
+import nguye.postcrunch.backend.report.ReportEntity;
 import nguye.postcrunch.backend.user.UserEntity;
+import nguye.postcrunch.backend.vote.VoteEntity;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -37,19 +39,19 @@ public abstract class ContentEntity {
   @Column(name = "TEXT", length = 3000)
   private String text;
 
-  @Column(name = "NUM_VOTES")
-  private int numVotes;
-
-  @Column(name = "NUM_REPORTS")
-  private int numReports;
-
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
   private UserEntity author;
 
-  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private final List<CommentEntity> comments = new ArrayList<>();
+
+  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  private final List<VoteEntity> votes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  private final List<ReportEntity> reports = new ArrayList<>();
 
   // Public no-arg constructor
   public ContentEntity() {
@@ -58,13 +60,5 @@ public abstract class ContentEntity {
   // Constructor with non-nullable fields
   public ContentEntity(String contentType) {
     this.contentType = contentType;
-  }
-
-  public void addVote() {
-    this.numVotes++;
-  }
-
-  public void addReport() {
-    this.numReports++;
   }
 }

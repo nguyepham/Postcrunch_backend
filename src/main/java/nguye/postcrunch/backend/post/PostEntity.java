@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import nguye.postcrunch.backend.newsfeed.ContentEntity;
+import nguye.postcrunch.backend.content.ContentEntity;
 
 @Entity
 @DiscriminatorValue("POST")

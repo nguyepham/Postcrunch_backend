@@ -31,8 +31,9 @@ public class UserRepresentationModelAssembler extends
   public User toModel(UserEntity entity) {
     User resource = new User();
     resource.add(linkTo(methodOn(UserController.class).getUserById(entity.getId())).withSelfRel());
+
     List<Post> posts = postRepresentationModelAssembler.toListModel(
-        postService.getPostsByAuthorId(entity.getId()).orElse(List.of())
+        postService.getPostsByAuthorId(entity.getId())
     );
 
     return resource
@@ -44,6 +45,6 @@ public class UserRepresentationModelAssembler extends
         .email(entity.getEmail())
         .dob(entity.getDob())
         .gender(entity.getGender())
-        .posts(AppUtil.extractPreview(posts));
+        .posts(AppUtil.toPostPreview(posts));
   }
 }

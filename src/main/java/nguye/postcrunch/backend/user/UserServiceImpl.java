@@ -1,7 +1,10 @@
 package nguye.postcrunch.backend.user;
 
+import nguye.postcrunch.backend.exception.ResourceNotFoundException;
+import nguye.postcrunch.backend.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -14,17 +17,65 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserEntity toEntity(User user) {
+    UserEntity entity = new UserEntity(user.getUsername(), user.getPassword());
+
+    entity.setFirstName(user.getFirstName());
+    entity.setLastName(user.getLastName());
+    entity.setEmail(user.getEmail());
+    entity.setDob(new java.sql.Date(user.getDob().getTime()));
+    entity.setGender(user.getGender());
+
+    return entity;
+  }
+
+  @Override
   public Optional<UserEntity> getUserById(String id) {
     return repository.findById(id);
   }
 
   @Override
-  public UserEntity updateUser(UserEntity entity) {
+  public UserEntity updateUser(User updatedUser) {
+
+    UserEntity entity = repository.findById(updatedUser.getId()).orElseThrow(
+        ResourceNotFoundException::new
+    );
+
+    if (Objects.nonNull(updatedUser.getUsername())) {
+      entity.setUsername(updatedUser.getUsername());
+    }
+
+    if (Objects.nonNull(updatedUser.getPassword())) {
+      entity.setPassword(updatedUser.getPassword());
+    }
+
+    if (Objects.nonNull(updatedUser.getFirstName())) {
+      entity.setFirstName(updatedUser.getFirstName());
+    }
+
+    if (Objects.nonNull(updatedUser.getLastName())) {
+      entity.setLastName(updatedUser.getLastName());
+    }
+
+    if (Objects.nonNull(updatedUser.getEmail())) {
+      entity.setEmail(updatedUser.getEmail());
+    }
+
+    if (Objects.nonNull(updatedUser.getDob())) {
+      // Assuming updatedUser.getDob() returns a Date or a Timestamp object
+      entity.setDob(new java.sql.Date(updatedUser.getDob().getTime()));
+    }
+
+    if (Objects.nonNull(updatedUser.getGender())) {
+      entity.setGender(updatedUser.getGender());
+    }
     return repository.save(entity);
   }
 
   @Override
   public void deleteUserById(String id) {
-    repository.deleteById(id);
+    if (repository.existsById(id)) {
+      repository.deleteById(id);
+    }
   }
 }

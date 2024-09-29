@@ -51,7 +51,7 @@ public class UserEntity {
   private List<ReportEntity> reports;
 
   // Public no-arg constructor
-  public UserEntity() {
+  protected UserEntity() {
   }
 
   // Constructor with non-nullable fields

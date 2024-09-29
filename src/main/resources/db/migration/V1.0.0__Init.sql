@@ -18,8 +18,6 @@ CREATE TABLE IF NOT EXISTS postcrunch.content (
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
     author_id CHAR(36),
     text VARCHAR(3000),
-    num_votes INTEGER UNSIGNED DEFAULT 0,
-    num_reports INTEGER UNSIGNED DEFAULT 0,
     FOREIGN KEY (author_id) REFERENCES user(id) ON DELETE SET NULL
 );
 

@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.vote;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import nguye.postcrunch.backend.newsfeed.ContentEntity;
+import nguye.postcrunch.backend.content.ContentEntity;
 import nguye.postcrunch.backend.user.UserEntity;
 
 import java.time.LocalDateTime;

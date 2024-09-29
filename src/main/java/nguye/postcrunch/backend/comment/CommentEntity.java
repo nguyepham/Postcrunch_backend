@@ -2,7 +2,7 @@ package nguye.postcrunch.backend.comment;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import nguye.postcrunch.backend.newsfeed.ContentEntity;
+import nguye.postcrunch.backend.content.ContentEntity;
 
 @Entity
 @DiscriminatorValue("COMMENT")
@@ -15,7 +15,7 @@ public class CommentEntity extends ContentEntity {
   private ContentEntity target;
 
   // Public no-arg constructor
-  public CommentEntity() {
+  protected CommentEntity() {
   }
 
   // Constructor with non-nullable fields
