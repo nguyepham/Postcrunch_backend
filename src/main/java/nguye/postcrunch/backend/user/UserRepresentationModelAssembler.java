@@ -19,12 +19,14 @@ public class UserRepresentationModelAssembler extends
 
   private final PostService postService;
   private final PostRepresentationModelAssembler postRepresentationModelAssembler;
+  private final AppUtil appUtil;
 
   public UserRepresentationModelAssembler(PostService postService,
-                                          PostRepresentationModelAssembler postRepresentationModelAssembler) {
+                                          PostRepresentationModelAssembler postRepresentationModelAssembler, AppUtil appUtil) {
     super(UserController.class, User.class);
     this.postService = postService;
     this.postRepresentationModelAssembler = postRepresentationModelAssembler;
+    this.appUtil = appUtil;
   }
 
   @Override
@@ -45,6 +47,6 @@ public class UserRepresentationModelAssembler extends
         .email(entity.getEmail())
         .dob(entity.getDob())
         .gender(entity.getGender())
-        .posts(AppUtil.toPostPreview(posts));
+        .posts(appUtil.toPostPreviews(posts));
   }
 }

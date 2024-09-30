@@ -6,6 +6,7 @@ import lombok.Setter;
 import nguye.postcrunch.backend.content.ContentEntity;
 import nguye.postcrunch.backend.user.UserEntity;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class VoteEntity {
   private final String id = UUID.randomUUID().toString();
 
   @Column(name = "CREATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")
-  private final LocalDateTime createdAt = LocalDateTime.now();
+  private final Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
 
   @Column(name = "VOTE_TYPE", nullable = false, length = 10)
   private String voteType;

@@ -20,10 +20,12 @@ public class CommentRepresentationModelAssembler extends
     RepresentationModelAssemblerSupport<CommentEntity, Comment> {
   
   private final CommentService service;
+  private final AppUtil appUtil;
 
-  public CommentRepresentationModelAssembler(CommentService service) {
+  public CommentRepresentationModelAssembler(CommentService service, AppUtil appUtil) {
     super(CommentController.class, Comment.class);
     this.service = service;
+    this.appUtil = appUtil;
   }
 
   @Override
@@ -52,12 +54,12 @@ public class CommentRepresentationModelAssembler extends
         .contentType(Comment.ContentTypeEnum.valueOf("COMMENT"))
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .author(AppUtil.extractAuthorInfo(entity.getAuthor()))
+        .author(appUtil.extractAuthorInfo(entity.getAuthor()))
         .target(entity.getTarget().getId())
         .edited(!createdAt.equals(updatedAt))
         .text(entity.getText())
         .numComments(replies.size())
-        .comments(AppUtil.toCommentPreview(replies));
+        .comments(appUtil.toCommentPreviews(replies));
   }
 
   public List<Comment> toListModel(Iterable<CommentEntity> entities) {

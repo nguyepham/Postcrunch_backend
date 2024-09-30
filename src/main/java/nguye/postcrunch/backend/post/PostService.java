@@ -1,7 +1,7 @@
 package nguye.postcrunch.backend.post;
 
 import nguye.postcrunch.backend.model.NewPost;
-import nguye.postcrunch.backend.model.PostPreview;
+import nguye.postcrunch.backend.model.ContentPreview;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface PostService {
 
   PostEntity getPostById(String id);
 
-  PostEntity updatePost(PostPreview updatedPost);
+  PostEntity updatePost(ContentPreview updatedPost);
 
   void deletePostById(String id);
 

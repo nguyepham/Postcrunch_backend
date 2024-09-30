@@ -16,7 +16,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class AppUtil {
 
-  public static AuthorInfo extractAuthorInfo(UserEntity entity) {
+  public AuthorInfo extractAuthorInfo(UserEntity entity) {
     AuthorInfo info = new AuthorInfo();
 
     info.add(linkTo(methodOn(UserController.class).getUserById(entity.getId())).withSelfRel());
@@ -28,13 +28,14 @@ public class AppUtil {
         .lastName(entity.getLastName());
   }
 
-  public static List<PostPreview> toPostPreview(List<Post> posts) {
-    List<PostPreview> previews = new ArrayList<>();
+  public List<ContentPreview> toPostPreviews(List<Post> posts) {
+    List<ContentPreview> previews = new ArrayList<>();
 
     posts.forEach(post -> {
-      PostPreview preview = new PostPreview()
+      ContentPreview preview = new ContentPreview()
           .add(linkTo(methodOn(PostController.class).getPostById(post.getId())).withSelfRel())
           .id(post.getId())
+          .contentType(post.getContentType().toString())
           .createdAt(post.getCreatedAt())
           .updatedAt(post.getUpdatedAt())
           .author(post.getAuthor())
@@ -50,16 +51,18 @@ public class AppUtil {
     return previews;
   }
 
-  public static List<CommentPreview> toCommentPreview(List<Comment> comments) {
-    List<CommentPreview> previews = new ArrayList<>();
+  public List<ContentPreview> toCommentPreviews(List<Comment> comments) {
+    List<ContentPreview> previews = new ArrayList<>();
 
     comments.forEach(comment -> {
-      CommentPreview preview = new CommentPreview()
+      ContentPreview preview = new ContentPreview()
           .add(linkTo(methodOn(CommentController.class).getCommentById(comment.getId())).withSelfRel())
           .id(comment.getId())
+          .contentType(comment.getContentType().toString())
           .createdAt(comment.getCreatedAt())
           .updatedAt(comment.getUpdatedAt())
           .author(comment.getAuthor())
+          .targetId(comment.getTarget())
           .edited(comment.getEdited())
           .text(comment.getText())
           .numUpVotes(comment.getNumUpVotes())

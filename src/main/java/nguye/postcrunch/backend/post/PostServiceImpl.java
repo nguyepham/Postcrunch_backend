@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.post;
 import nguye.postcrunch.backend.content.ContentEntity;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.NewPost;
-import nguye.postcrunch.backend.model.PostPreview;
+import nguye.postcrunch.backend.model.ContentPreview;
 import nguye.postcrunch.backend.content.ContentRepository;
 import nguye.postcrunch.backend.user.UserService;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public PostEntity updatePost(PostPreview updatedPost) {
+  public PostEntity updatePost(ContentPreview updatedPost) {
 
     PostEntity entity = (PostEntity) repository.findById(updatedPost.getId()).orElseThrow(
         ResourceNotFoundException::new

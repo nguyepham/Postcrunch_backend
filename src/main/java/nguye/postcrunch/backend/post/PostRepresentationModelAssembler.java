@@ -23,11 +23,13 @@ public class PostRepresentationModelAssembler extends
 
   private final CommentRepresentationModelAssembler commentRepresentationModelAssembler;
   private final CommentService service;
+  private final AppUtil appUtil;
 
-  public PostRepresentationModelAssembler(CommentRepresentationModelAssembler commentRepresentationModelAssembler, CommentService service) {
+  public PostRepresentationModelAssembler(CommentRepresentationModelAssembler commentRepresentationModelAssembler, CommentService service, AppUtil appUtil) {
     super(PostController.class, Post.class);
     this.commentRepresentationModelAssembler = commentRepresentationModelAssembler;
     this.service = service;
+    this.appUtil = appUtil;
   }
 
   @Override
@@ -43,7 +45,7 @@ public class PostRepresentationModelAssembler extends
     Timestamp updatedAt = entity.getUpdatedAt();
 
     if (Objects.nonNull(entity.getAuthor())) {
-      resource.setAuthor(AppUtil.extractAuthorInfo(entity.getAuthor()));
+      resource.setAuthor(appUtil.extractAuthorInfo(entity.getAuthor()));
     }
 
     return resource
@@ -55,7 +57,7 @@ public class PostRepresentationModelAssembler extends
         .title(entity.getTitle())
         .text(entity.getText())
         .numComments(comments.size())
-        .comments(AppUtil.toCommentPreview(comments));
+        .comments(appUtil.toCommentPreviews(comments));
   }
 
   public List<Post> toListModel(Iterable<PostEntity> entities) {

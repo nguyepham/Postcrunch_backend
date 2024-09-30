@@ -4,7 +4,7 @@ import nguye.postcrunch.backend.api.PostApi;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.NewPost;
 import nguye.postcrunch.backend.model.Post;
-import nguye.postcrunch.backend.model.PostPreview;
+import nguye.postcrunch.backend.model.ContentPreview;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +33,7 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<Post> updatePost(PostPreview updatedPost) {
+  public ResponseEntity<Post> updatePost(ContentPreview updatedPost) {
     return ResponseEntity.ok(assembler.toModel(service.updatePost(updatedPost)));
   }
 

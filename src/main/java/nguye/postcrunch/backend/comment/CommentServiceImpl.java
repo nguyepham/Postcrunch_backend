@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.comment;
 import nguye.postcrunch.backend.content.ContentEntity;
 import nguye.postcrunch.backend.content.ContentRepository;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
-import nguye.postcrunch.backend.model.CommentPreview;
+import nguye.postcrunch.backend.model.ContentPreview;
 import nguye.postcrunch.backend.model.NewComment;
 import nguye.postcrunch.backend.user.UserService;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public CommentEntity updateComment(CommentPreview updatedComment) {
+  public CommentEntity updateComment(ContentPreview updatedComment) {
 
     CommentEntity entity = (CommentEntity) repository.findById(updatedComment.getId()).orElseThrow(
         ResourceNotFoundException::new

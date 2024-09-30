@@ -13,11 +13,15 @@ import java.util.Optional;
 public interface ContentRepository
     extends PagingAndSortingRepository<ContentEntity, String>, CrudRepository<ContentEntity, String> {
 
-  @Query("select comment from CommentEntity comment " +
-      "where comment.target.id = :contentId")
-  Optional<List<CommentEntity>> getCommentsByContentId(@Param("contentId") String contentId);
-
   @Query("select post from PostEntity post " +
       "where post.author.id = :authorId")
   Optional<List<PostEntity>> getPostsByAuthorId(@Param("authorId") String authorId);
+
+  @Query("select comment from CommentEntity comment " +
+      "where comment.author.id = :authorId")
+  Optional<List<CommentEntity>> getCommentsByAuthorId(@Param("authorId") String authorId);
+
+  @Query("select comment from CommentEntity comment " +
+      "where comment.target.id = :contentId")
+  Optional<List<CommentEntity>> getCommentsByContentId(@Param("contentId") String contentId);
 }
