@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import nguye.postcrunch.backend.comment.CommentEntity;
-import nguye.postcrunch.backend.report.ReportEntity;
 import nguye.postcrunch.backend.user.UserEntity;
 import nguye.postcrunch.backend.vote.VoteEntity;
 
@@ -49,9 +48,6 @@ public abstract class ContentEntity {
 
   @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private final List<VoteEntity> votes = new ArrayList<>();
-
-  @OneToMany(mappedBy = "target", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-  private final List<ReportEntity> reports = new ArrayList<>();
 
   // Public no-arg constructor
   public ContentEntity() {

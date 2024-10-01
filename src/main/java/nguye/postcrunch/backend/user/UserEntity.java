@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import nguye.postcrunch.backend.post.PostEntity;
-import nguye.postcrunch.backend.report.ReportEntity;
 import nguye.postcrunch.backend.vote.VoteEntity;
 
 import java.util.List;
@@ -46,9 +45,6 @@ public class UserEntity {
 
   @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
   private List<VoteEntity> votes;
-
-  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private List<ReportEntity> reports;
 
   // Public no-arg constructor
   protected UserEntity() {

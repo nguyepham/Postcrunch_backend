@@ -255,51 +255,6 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
-  /api/v1/user/{id}/reports:
-
-    get:
-      tags:
-        - report
-      description: Get all reports of a user.
-      operationId: getReportsByAuthorId
-      parameters:
-        - name: id
-          in: path
-          required: false
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-            default: 0
-        - name: size
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        200:
-          description: Fetch successfully.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Report'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-
   /api/v1/content/{id}/comments:
 
     get:
@@ -452,51 +407,6 @@ paths:
                   description: There are two elements in this array, one for each type of vote.
                   format: int32
 
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-
-  /api/v1/content/{id}/reports:
-
-    get:
-      tags:
-        - report
-      description: Get all reports of a content.
-      operationId: getReportsByTargetId
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-            default: 0
-        - name: size
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-            default: 10
-      responses:
-        200:
-          description: Fetch successfully.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Report'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -1003,37 +913,6 @@ components:
         createdAt:
           type: string
           description: The time the voted was created.
-          format: date-time
-        author:
-          $ref: '#/components/schemas/AuthorInfo'
-        authorId:
-          type: string
-          description: The id of the user who created the vote.
-        targetId:
-          type: string
-          description: The id of the targeted content.
-
-    Report:
-      type: object
-      description: A report made on a post or comment.
-      required:
-        - author
-        - target
-      properties:
-        id:
-          type: string
-          description: The report's id.
-        reason:
-          type: string
-          description: The reason for reporting the content.
-          enum:
-            - SPAM
-            - FRAUD
-            - INAPPROPRIATE
-            - OTHER
-        createdAt:
-          type: string
-          description: The time the report was created.
           format: date-time
         author:
           $ref: '#/components/schemas/AuthorInfo'
