@@ -7,6 +7,8 @@ import nguye.postcrunch.backend.model.Post;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,16 @@ public class PostController implements PostApi {
   @Override
   public ResponseEntity<Post> createPost(NewPost newPost) {
     return ResponseEntity.ok(assembler.toModel(service.createPost(newPost)));
+  }
+
+  @Override
+  public ResponseEntity<List<Post>> getNewsfeed(String requestedAt, Boolean latest, Integer page, Integer size) throws ParseException {
+
+    List<PostEntity> posts = (latest)?
+        service.getPostsOrderByUpdatedAt(page, size):
+        service.getPostsOrderByVotes(requestedAt, page, size);
+
+    return ResponseEntity.ok(assembler.toListModel(posts));
   }
 
   @Override

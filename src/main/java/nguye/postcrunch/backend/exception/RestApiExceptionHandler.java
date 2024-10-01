@@ -28,7 +28,7 @@ public class RestApiExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-//    ex.printStackTrace();
+    ex.printStackTrace();
     ErrorResponse error = new ErrorResponse()
         .errorCode(AppError.GENERIC_ERROR.getCode())
         .message(AppError.GENERIC_ERROR.getMessage())

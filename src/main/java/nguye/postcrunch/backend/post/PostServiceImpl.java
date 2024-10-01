@@ -9,6 +9,8 @@ import nguye.postcrunch.backend.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,6 +51,16 @@ public class PostServiceImpl implements PostService {
       throw new ResourceNotFoundException();
     }
     return (PostEntity) optPost.get();
+  }
+
+  @Override
+  public List<PostEntity> getPostsOrderByUpdatedAt(int page, int size) {
+    return repository.getPostsOrderByUpdatedAt(page, size);
+  }
+
+  @Override
+  public List<PostEntity> getPostsOrderByVotes(String requestedAt, int page, int size) throws ParseException {
+    return repository.getPostsOrderByVotes(requestedAt, page, size);
   }
 
   @Override
