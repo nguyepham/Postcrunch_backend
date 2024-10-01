@@ -51,13 +51,23 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public List<CommentEntity> getCommentsByAuthorId(String authorId) {
-    return repository.getCommentsByAuthorId(authorId).orElse(List.of());
+  public List<CommentEntity> getCommentsByAuthorIdOrderByUpdatedAt(String authorId, int page, int size) {
+    return repository.getCommentsByAuthorIdOrderByUpdatedAt(authorId, page, size);
   }
 
   @Override
-  public List<CommentEntity> getCommentsByTargetId(String targetId) {
-    return repository.getCommentsByTargetId(targetId).orElse(List.of());
+  public List<CommentEntity> getCommentsByTargetIdOrderByUpdatedAt(String targetId, int page, int size) {
+    return repository.getCommentsByTargetIdOrderByUpdatedAt(targetId, page, size);
+  }
+
+  @Override
+  public List<CommentEntity> getCommentsByAuthorIdOrderByVotes(String authorId, int page, int size) {
+    return repository.getCommentsByAuthorIdOrderByVotes(authorId, page, size);
+  }
+
+  @Override
+  public List<CommentEntity> getCommentsByTargetIdOrderByVotes(String targetId, int page, int size) {
+    return repository.getCommentsByTargetIdOrderByVotes(targetId, page, size);
   }
 
   @Override
@@ -80,5 +90,10 @@ public class CommentServiceImpl implements CommentService {
     if (repository.existsById(id)) {
       repository.deleteById(id);
     }
+  }
+
+  @Override
+  public int getNumCommentsByTargetId(String targetId) {
+    return repository.getNumCommentsByTargetId(targetId);
   }
 }

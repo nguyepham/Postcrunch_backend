@@ -50,7 +50,7 @@ public class PostRepresentationModelAssembler extends
         .updatedAt(updatedAt)
         .edited(!createdAt.equals(updatedAt))
         .title(entity.getTitle())
-//        .numComments(comments.size())
+        .numComments(commentService.getNumCommentsByTargetId(entity.getId()))
         .numUpVotes(numVotes.get(0))
         .numDownVotes(numVotes.get(1))
         .text(entity.getText());

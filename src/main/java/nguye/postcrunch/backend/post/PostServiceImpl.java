@@ -52,6 +52,16 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
+  public List<PostEntity> getPostsByAuthorIdOrderByUpdatedAt(String authorId, int page, int size) {
+    return repository.getPostsByAuthorIdOrderByUpdatedAt(authorId, page, size);
+  }
+
+  @Override
+  public List<PostEntity> getPostsByAuthorIdOrderByVotes(String authorId, int page, int size) {
+    return repository.getPostsByAuthorIdOrderByVotes(authorId, page, size);
+  }
+
+  @Override
   public PostEntity updatePost(Post updatedPost) {
 
     PostEntity entity = (PostEntity) repository.findById(updatedPost.getId()).orElseThrow(
@@ -75,15 +85,5 @@ public class PostServiceImpl implements PostService {
     if (repository.existsById(id)) {
       repository.deleteById(id);
     }
-  }
-
-  @Override
-  public List<PostEntity> getPostsByAuthorIdOrderByUpdatedAt(String authorId, int page, int size) {
-    return repository.getPostsByAuthorIdOrderByUpdatedAt(authorId, page, size);
-  }
-
-  @Override
-  public List<PostEntity> getPostsByAuthorIdOrderByVotes(String authorId, int page, int size) {
-    return repository.getPostsByAuthorIdOrderByVotes(authorId, page, size);
   }
 }

@@ -11,11 +11,11 @@ public interface PostService {
 
   PostEntity getPostById(String id);
 
-  PostEntity updatePost(Post updatedPost);
-
-  void deletePostById(String id);
-
   List<PostEntity> getPostsByAuthorIdOrderByUpdatedAt(String authorId, int page, int size);
 
   List<PostEntity> getPostsByAuthorIdOrderByVotes(String authorId, int page, int size);
+
+  PostEntity updatePost(Post updatedPost);
+
+  void deletePostById(String id);
 }

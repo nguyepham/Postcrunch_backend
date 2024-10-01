@@ -20,10 +20,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CommentRepresentationModelAssembler extends
     RepresentationModelAssemblerSupport<CommentEntity, Comment> {
 
+  private final CommentService service;
   private final VoteService voteService;
 
-  public CommentRepresentationModelAssembler(VoteService voteService) {
+  public CommentRepresentationModelAssembler(CommentService service, VoteService voteService) {
     super(CommentController.class, Comment.class);
+    this.service = service;
     this.voteService = voteService;
   }
 
@@ -54,7 +56,7 @@ public class CommentRepresentationModelAssembler extends
         .author(AppUtil.extractAuthorInfo(entity.getAuthor()))
         .targetId(entity.getTarget().getId())
         .edited(!createdAt.equals(updatedAt))
-//        .numComments(replies.size())
+        .numComments(service.getNumCommentsByTargetId(entity.getId()))
         .numUpVotes(numVotes.get(0))
         .numDownVotes(numVotes.get(1))
         .text(entity.getText());

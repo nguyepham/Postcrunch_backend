@@ -7,6 +7,7 @@ import nguye.postcrunch.backend.model.NewComment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +33,26 @@ public class CommentController implements CommentApi {
   }
 
   @Override
+  public ResponseEntity<List<Comment>> getCommentsByAuthorId(String id, Boolean latest, Integer page, Integer size) {
+
+    List<CommentEntity> comments = (latest)?
+        service.getCommentsByAuthorIdOrderByUpdatedAt(id, page, size):
+        service.getCommentsByAuthorIdOrderByVotes(id, page, size);
+
+    return ResponseEntity.ok(assembler.toListModel(comments));
+  }
+
+  @Override
+  public ResponseEntity<List<Comment>> getCommentsByTargetId(String id, Boolean latest, Integer page, Integer size) {
+
+    List<CommentEntity> comments = (latest)?
+        service.getCommentsByTargetIdOrderByUpdatedAt(id, page, size):
+        service.getCommentsByTargetIdOrderByVotes(id, page, size);
+
+    return ResponseEntity.ok(assembler.toListModel(comments));
+  }
+
+  @Override
   public ResponseEntity<Comment> updateComment(Comment updatedComment) {
     return ResponseEntity.ok(assembler.toModel(service.updateComment(updatedComment)));
   }
@@ -40,5 +61,10 @@ public class CommentController implements CommentApi {
   public ResponseEntity<Void> deleteCommentById(String id) {
     service.deleteCommentById(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<Integer> getNumCommentsByTargetId(String id) throws Exception {
+    return ResponseEntity.ok(service.getNumCommentsByTargetId(id));
   }
 }

@@ -11,11 +11,17 @@ public interface CommentService {
 
   CommentEntity getCommentById(String id);
 
-  List<CommentEntity> getCommentsByAuthorId(String authorId);
+  List<CommentEntity> getCommentsByAuthorIdOrderByUpdatedAt(String authorId, int page, int size);
 
-  List<CommentEntity> getCommentsByTargetId(String targetId);
+  List<CommentEntity> getCommentsByTargetIdOrderByUpdatedAt(String targetId, int page, int size);
+
+  List<CommentEntity> getCommentsByAuthorIdOrderByVotes(String authorId, int page, int size);
+
+  List<CommentEntity> getCommentsByTargetIdOrderByVotes(String targetId, int page, int size);
 
   CommentEntity updateComment(Comment updatedComment);
 
   void deleteCommentById(String id);
+
+  int getNumCommentsByTargetId(String targetId);
 }
