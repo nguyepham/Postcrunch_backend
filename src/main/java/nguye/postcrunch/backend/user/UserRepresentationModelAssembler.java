@@ -1,10 +1,6 @@
 package nguye.postcrunch.backend.user;
 
-import nguye.postcrunch.backend.AppUtil;
-import nguye.postcrunch.backend.model.Post;
 import nguye.postcrunch.backend.model.User;
-import nguye.postcrunch.backend.post.PostRepresentationModelAssembler;
-import nguye.postcrunch.backend.post.PostService;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -17,26 +13,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserRepresentationModelAssembler extends
     RepresentationModelAssemblerSupport<UserEntity, User> {
 
-  private final PostService postService;
-  private final PostRepresentationModelAssembler postRepresentationModelAssembler;
-  private final AppUtil appUtil;
-
-  public UserRepresentationModelAssembler(PostService postService,
-                                          PostRepresentationModelAssembler postRepresentationModelAssembler, AppUtil appUtil) {
+  public UserRepresentationModelAssembler() {
     super(UserController.class, User.class);
-    this.postService = postService;
-    this.postRepresentationModelAssembler = postRepresentationModelAssembler;
-    this.appUtil = appUtil;
   }
 
   @Override
   public User toModel(UserEntity entity) {
     User resource = new User();
     resource.add(linkTo(methodOn(UserController.class).getUserById(entity.getId())).withSelfRel());
-
-    List<Post> posts = postRepresentationModelAssembler.toListModel(
-        postService.getPostsByAuthorId(entity.getId())
-    );
 
     return resource
         .id(entity.getId())
@@ -46,7 +30,6 @@ public class UserRepresentationModelAssembler extends
         .lastName(entity.getLastName())
         .email(entity.getEmail())
         .dob(entity.getDob())
-        .gender(entity.getGender())
-        .posts(appUtil.toPostPreviews(posts));
+        .gender(entity.getGender());
   }
 }

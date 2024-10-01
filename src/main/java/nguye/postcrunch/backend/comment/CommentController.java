@@ -3,7 +3,6 @@ package nguye.postcrunch.backend.comment;
 import nguye.postcrunch.backend.api.CommentApi;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.Comment;
-import nguye.postcrunch.backend.model.ContentPreview;
 import nguye.postcrunch.backend.model.NewComment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +32,7 @@ public class CommentController implements CommentApi {
   }
 
   @Override
-  public ResponseEntity<Comment> updateComment(ContentPreview updatedComment) {
+  public ResponseEntity<Comment> updateComment(Comment updatedComment) {
     return ResponseEntity.ok(assembler.toModel(service.updateComment(updatedComment)));
   }
 

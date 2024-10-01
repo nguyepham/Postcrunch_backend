@@ -4,10 +4,10 @@ import nguye.postcrunch.backend.api.PostApi;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.NewPost;
 import nguye.postcrunch.backend.model.Post;
-import nguye.postcrunch.backend.model.ContentPreview;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,7 +33,17 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<Post> updatePost(ContentPreview updatedPost) {
+  public ResponseEntity<List<Post>> getPostsByAuthorId(String id, Boolean latest, Integer page, Integer size) {
+
+    List<PostEntity> posts = (latest)?
+        service.getPostsByAuthorIdOrderByUpdatedAt(id, page, size):
+        service.getPostsByAuthorIdOrderByVotes(id, page, size);
+
+    return ResponseEntity.ok(assembler.toListModel(posts));
+  }
+
+  @Override
+  public ResponseEntity<Post> updatePost(Post updatedPost) {
     return ResponseEntity.ok(assembler.toModel(service.updatePost(updatedPost)));
   }
 

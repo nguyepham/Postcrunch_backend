@@ -3,8 +3,8 @@ package nguye.postcrunch.backend.post;
 import nguye.postcrunch.backend.content.ContentEntity;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.NewPost;
-import nguye.postcrunch.backend.model.ContentPreview;
 import nguye.postcrunch.backend.content.ContentRepository;
+import nguye.postcrunch.backend.model.Post;
 import nguye.postcrunch.backend.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public PostEntity updatePost(ContentPreview updatedPost) {
+  public PostEntity updatePost(Post updatedPost) {
 
     PostEntity entity = (PostEntity) repository.findById(updatedPost.getId()).orElseThrow(
         ResourceNotFoundException::new
@@ -78,7 +78,12 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public List<PostEntity> getPostsByAuthorId(String authorId) {
-    return repository.getPostsByAuthorId(authorId).orElse(List.of());
+  public List<PostEntity> getPostsByAuthorIdOrderByUpdatedAt(String authorId, int page, int size) {
+    return repository.getPostsByAuthorIdOrderByUpdatedAt(authorId, page, size);
+  }
+
+  @Override
+  public List<PostEntity> getPostsByAuthorIdOrderByVotes(String authorId, int page, int size) {
+    return repository.getPostsByAuthorIdOrderByVotes(authorId, page, size);
   }
 }

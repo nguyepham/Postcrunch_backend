@@ -3,7 +3,7 @@ package nguye.postcrunch.backend.comment;
 import nguye.postcrunch.backend.content.ContentEntity;
 import nguye.postcrunch.backend.content.ContentRepository;
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
-import nguye.postcrunch.backend.model.ContentPreview;
+import nguye.postcrunch.backend.model.Comment;
 import nguye.postcrunch.backend.model.NewComment;
 import nguye.postcrunch.backend.user.UserService;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,17 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public CommentEntity updateComment(ContentPreview updatedComment) {
+  public List<CommentEntity> getCommentsByAuthorId(String authorId) {
+    return repository.getCommentsByAuthorId(authorId).orElse(List.of());
+  }
+
+  @Override
+  public List<CommentEntity> getCommentsByTargetId(String targetId) {
+    return repository.getCommentsByTargetId(targetId).orElse(List.of());
+  }
+
+  @Override
+  public CommentEntity updateComment(Comment updatedComment) {
 
     CommentEntity entity = (CommentEntity) repository.findById(updatedComment.getId()).orElseThrow(
         ResourceNotFoundException::new
@@ -70,10 +80,5 @@ public class CommentServiceImpl implements CommentService {
     if (repository.existsById(id)) {
       repository.deleteById(id);
     }
-  }
-
-  @Override
-  public List<CommentEntity> getCommentsByContentId(String contentId) {
-    return repository.getCommentsByContentId(contentId).orElse(List.of());
   }
 }

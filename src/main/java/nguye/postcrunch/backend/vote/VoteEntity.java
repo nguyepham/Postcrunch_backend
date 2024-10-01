@@ -26,7 +26,7 @@ public class VoteEntity {
   private String voteType;
 
   @Setter
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID")
   private UserEntity author;
 
