@@ -13,4 +13,6 @@ public interface VoteService {
   List<VoteEntity> getVotesByTargetId(String targetId, int page, int size);
 
   void deleteVoteById(String id);
+
+  List<Integer> getNumVotesByTargetId(String targetId);
 }

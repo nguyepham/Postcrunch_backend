@@ -54,4 +54,12 @@ public class VoteServiceImpl implements VoteService {
       repository.deleteById(id);
     }
   }
+
+  @Override
+  public List<Integer> getNumVotesByTargetId(String targetId) {
+    return List.of(
+        repository.getNumUpVotesByTargetId(targetId),
+        repository.getNumDownVotesByTargetId(targetId)
+    );
+  }
 }

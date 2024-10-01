@@ -41,7 +41,10 @@ public class ContentRepositoryImpl implements ContentRepositoryExt {
             "where post.author.id = :authorId " +
             "order by (select count(vote) from VoteEntity vote " +
                       "where vote.target.id = post.id " +
-                      "and vote.voteType = \"UP\") desc",
+                      "and vote.voteType = \"UP\") desc, " +
+                      "(select count(vote) from VoteEntity vote " +
+                      "where vote.target.id = post.id " +
+                      "and vote.voteType = 'DOWN') asc",
         PostEntity.class);
 
     query.setParameter("authorId", authorId);

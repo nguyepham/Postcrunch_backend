@@ -41,4 +41,9 @@ public class VoteController implements VoteApi {
     service.deleteVoteById(id);
     return ResponseEntity.noContent().build();
   }
+
+  @Override
+  public ResponseEntity<List<Integer>> getNumVotesByTargetId(String id) {
+    return ResponseEntity.ok(service.getNumVotesByTargetId(id));
+  }
 }

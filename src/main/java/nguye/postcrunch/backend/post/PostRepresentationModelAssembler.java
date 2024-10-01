@@ -1,9 +1,9 @@
 package nguye.postcrunch.backend.post;
 
 import nguye.postcrunch.backend.AppUtil;
-import nguye.postcrunch.backend.comment.CommentRepresentationModelAssembler;
 import nguye.postcrunch.backend.comment.CommentService;
 import nguye.postcrunch.backend.model.Post;
+import nguye.postcrunch.backend.vote.VoteService;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +20,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class PostRepresentationModelAssembler extends
     RepresentationModelAssemblerSupport<PostEntity, Post> {
 
-  private final CommentRepresentationModelAssembler commentRepresentationModelAssembler;
-  private final CommentService service;
+  private final VoteService voteService;
+  private final CommentService commentService;
 
-  public PostRepresentationModelAssembler(CommentRepresentationModelAssembler commentRepresentationModelAssembler, CommentService service) {
+  public PostRepresentationModelAssembler(VoteService voteService, CommentService commentService) {
     super(PostController.class, Post.class);
-    this.commentRepresentationModelAssembler = commentRepresentationModelAssembler;
-    this.service = service;
+    this.voteService = voteService;
+    this.commentService = commentService;
   }
 
   @Override
@@ -41,6 +41,8 @@ public class PostRepresentationModelAssembler extends
       resource.setAuthor(AppUtil.extractAuthorInfo(entity.getAuthor()));
     }
 
+    List<Integer> numVotes = voteService.getNumVotesByTargetId(entity.getId());
+
     return resource
         .id(entity.getId())
         .contentType(Post.ContentTypeEnum.POST)
@@ -49,6 +51,8 @@ public class PostRepresentationModelAssembler extends
         .edited(!createdAt.equals(updatedAt))
         .title(entity.getTitle())
 //        .numComments(comments.size())
+        .numUpVotes(numVotes.get(0))
+        .numDownVotes(numVotes.get(1))
         .text(entity.getText());
   }
 

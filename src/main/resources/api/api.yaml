@@ -396,6 +396,39 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /api/v1/content/{id}/votes/count:
+
+    get:
+      tags:
+        - vote
+      description: Get the number of votes of a content.
+      operationId: getNumVotesByTargetId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  description: There are two elements in this array, one for each type of vote.
+
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /api/v1/content/{id}/reports:
 
     get:

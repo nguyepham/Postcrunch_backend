@@ -3,6 +3,7 @@ package nguye.postcrunch.backend.comment;
 import nguye.postcrunch.backend.AppUtil;
 import nguye.postcrunch.backend.model.Comment;
 import nguye.postcrunch.backend.post.PostController;
+import nguye.postcrunch.backend.vote.VoteService;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CommentRepresentationModelAssembler extends
     RepresentationModelAssemblerSupport<CommentEntity, Comment> {
 
-  public CommentRepresentationModelAssembler() {
+  private final VoteService voteService;
+
+  public CommentRepresentationModelAssembler(VoteService voteService) {
     super(CommentController.class, Comment.class);
+    this.voteService = voteService;
   }
 
   @Override
@@ -37,6 +41,8 @@ public class CommentRepresentationModelAssembler extends
               .getCommentById(entity.getTarget().getId())).withRel("target"));
     }
 
+    List<Integer> numVotes = voteService.getNumVotesByTargetId(entity.getId());
+
     Timestamp createdAt = entity.getCreatedAt();
     Timestamp updatedAt = entity.getUpdatedAt();
 
@@ -49,6 +55,8 @@ public class CommentRepresentationModelAssembler extends
         .targetId(entity.getTarget().getId())
         .edited(!createdAt.equals(updatedAt))
 //        .numComments(replies.size())
+        .numUpVotes(numVotes.get(0))
+        .numDownVotes(numVotes.get(1))
         .text(entity.getText());
   }
 
