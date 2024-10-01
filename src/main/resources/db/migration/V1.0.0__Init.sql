@@ -62,19 +62,31 @@ INSERT INTO postcrunch.user (id, username, password, first_name, last_name, emai
     ('4a2b3c4d-4234-5678-9101-112131415164', 'user4', 'password4', 'Diana', 'Prince', 'diana@example.com', '1995-07-07', 'F'),
     ('5a2b3c4d-5234-5678-9101-112131415165', 'user5', 'password5', 'Eve', 'Adams', 'eve@example.com', '1998-09-15', 'F');
 
-
 -- Seeding posts (content_type = 'POST')
-INSERT INTO postcrunch.content (id, content_type, text, author_id, created_at) VALUES
-    ('1a2b3c4d-aaaa-5678-9101-222131415161', 'POST', 'Alice shares her thoughts on technology.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-01 05:30:00'),
-    ('1a2b3c4d-aaaa-5678-9101-222131415162', 'POST', 'Alice writes about her favorite books.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-01 07:30:00'),
-    ('1a2b3c4d-aaaa-5678-9101-222131415163', 'POST', 'Alice discusses her workout routine.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-01 09:30:00'),
-    ('1a2b3c4d-aaaa-5678-9101-222131415164', 'POST', 'Alice gives tips on productivity.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-01 11:30:00'),
-    ('1a2b3c4d-aaaa-5678-9101-222131415165', 'POST', 'Alice reviews her recent travel adventure.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-01 13:30:00'),
-    ('1a2b3c4d-aaaa-5678-9101-112131415161', 'POST', 'This is the first post by Alice.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-01 15:30:00'),
-    ('2a2b3c4d-bbbb-5678-9101-112131415162', 'POST', 'Bob\'s thoughts on the latest tech.', '2a2b3c4d-2234-5678-9101-112131415162', '2024-10-01 17:30:00'),
-    ('3a2b3c4d-cccc-5678-9101-112131415163', 'POST', 'Charlie\'s review of a movie.', '3a2b3c4d-3234-5678-9101-112131415163', '2024-10-01 19:30:00'),
-    ('4a2b3c4d-dddd-5678-9101-112131415164', 'POST', 'Diana writes about her travel experiences.', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-01 21:30:00'),
-    ('5a2b3c4d-eeee-5678-9101-112131415165', 'POST', 'Eve shares a recipe for a healthy meal.', '5a2b3c4d-5234-5678-9101-112131415165', '2024-10-01 23:30:00');
+INSERT INTO postcrunch.content (id, content_type, text, author_id, updated_at) VALUES
+    ('1a2b3c4d-aaaa-5678-9101-222131415161', 'POST', 'Alice shares her thoughts on technology.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-11 05:30:00'),
+    ('1a2b3c4d-aaaa-5678-9101-222131415162', 'POST', 'Alice writes about her favorite books.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-11 07:30:00'),
+    ('1a2b3c4d-aaaa-5678-9101-222131415163', 'POST', 'Alice discusses her workout routine.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-11 09:30:00'),
+    ('1a2b3c4d-aaaa-5678-9101-222131415164', 'POST', 'Alice gives tips on productivity.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-11 11:30:00'),
+    ('1a2b3c4d-aaaa-5678-9101-222131415165', 'POST', 'Alice reviews her recent travel adventure.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-11 13:30:00'),
+    ('1a2b3c4d-aaaa-5678-9101-112131415161', 'POST', 'This is the first post by Alice.', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-11 15:30:00'),
+    ('2a2b3c4d-bbbb-5678-9101-112131415162', 'POST', 'Bob\'s thoughts on the latest tech.', '2a2b3c4d-2234-5678-9101-112131415162', '2024-10-11 17:30:00'),
+    ('3a2b3c4d-cccc-5678-9101-112131415163', 'POST', 'Charlie\'s review of a movie.', '3a2b3c4d-3234-5678-9101-112131415163', '2024-10-11 19:30:00'),
+    ('4a2b3c4d-dddd-5678-9101-112131415164', 'POST', 'Diana writes about her travel experiences.', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-11 21:30:00'),
+    ('5a2b3c4d-eeee-5678-9101-112131415165', 'POST', 'Eve shares a recipe for a healthy meal.', '5a2b3c4d-5234-5678-9101-112131415165', '2024-10-11 23:30:00');
+
+-- Seeding comments (content_type = 'COMMENT')
+INSERT INTO postcrunch.content (id, content_type, text, author_id, updated_at) VALUES
+('4a2b3c4d-6666-5678-9101-112131415164', 'COMMENT', 'This recipe is amazing, Eve!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-12 15:30:00'),
+('4a2b3c4d-7777-5678-9101-112131415164', 'COMMENT', 'I tried this and it turned out great!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-13 15:30:00'),
+('4a2b3c4d-8888-5678-9101-112131415164', 'COMMENT', 'Thanks for sharing, Eve!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-14 15:30:00'),
+('4a2b3c4d-9999-5678-9101-112131415164', 'COMMENT', 'I\'ll recommend this to my friends!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-15 15:30:00'),
+('4a2b3c4d-aaaa-5678-9101-112131415164', 'COMMENT', 'Looking forward to more recipes from you!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-16 15:30:00'),
+('1a2b3c4d-1111-5678-9101-112131415161', 'COMMENT', 'Great post, Alice!', '2a2b3c4d-2234-5678-9101-112131415162', '2024-10-17 15:30:00'),
+('2a2b3c4d-2222-5678-9101-112131415162', 'COMMENT', 'I totally agree, Bob!', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-18 15:30:00'),
+('3a2b3c4d-3333-5678-9101-112131415163', 'COMMENT', 'Nice review, Charlie.', '5a2b3c4d-5234-5678-9101-112131415165', '2024-10-19 15:30:00'),
+('4a2b3c4d-4444-5678-9101-112131415164', 'COMMENT', 'This is inspiring, Diana!', '3a2b3c4d-3234-5678-9101-112131415163', '2024-10-20 15:30:00'),
+('5a2b3c4d-5555-5678-9101-112131415165', 'COMMENT', 'Eve, I\'ll try this recipe!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-21 15:30:00');
 
 INSERT INTO postcrunch.post (id, title) VALUES
     ('1a2b3c4d-aaaa-5678-9101-222131415161', 'Alice\'s Thoughts on Technology'),
@@ -87,19 +99,6 @@ INSERT INTO postcrunch.post (id, title) VALUES
     ('3a2b3c4d-cccc-5678-9101-112131415163', 'Movie Review by Charlie'),
     ('4a2b3c4d-dddd-5678-9101-112131415164', 'Diana\'s Travel Diary'),
     ('5a2b3c4d-eeee-5678-9101-112131415165', 'Eve\'s Healthy Meal Recipe');
-
--- Seeding comments (content_type = 'COMMENT')
-INSERT INTO postcrunch.content (id, content_type, text, author_id, created_at) VALUES
-    ('4a2b3c4d-6666-5678-9101-112131415164', 'COMMENT', 'This recipe is amazing, Eve!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-02 15:30:00'),
-    ('4a2b3c4d-7777-5678-9101-112131415164', 'COMMENT', 'I tried this and it turned out great!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-03 15:30:00'),
-    ('4a2b3c4d-8888-5678-9101-112131415164', 'COMMENT', 'Thanks for sharing, Eve!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-04 15:30:00'),
-    ('4a2b3c4d-9999-5678-9101-112131415164', 'COMMENT', 'I\'ll recommend this to my friends!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-05 15:30:00'),
-    ('4a2b3c4d-aaaa-5678-9101-112131415164', 'COMMENT', 'Looking forward to more recipes from you!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-06 15:30:00'),
-    ('1a2b3c4d-1111-5678-9101-112131415161', 'COMMENT', 'Great post, Alice!', '2a2b3c4d-2234-5678-9101-112131415162', '2024-10-07 15:30:00'),
-    ('2a2b3c4d-2222-5678-9101-112131415162', 'COMMENT', 'I totally agree, Bob!', '1a2b3c4d-1234-5678-9101-112131415161', '2024-10-08 15:30:00'),
-    ('3a2b3c4d-3333-5678-9101-112131415163', 'COMMENT', 'Nice review, Charlie.', '5a2b3c4d-5234-5678-9101-112131415165', '2024-10-09 15:30:00'),
-    ('4a2b3c4d-4444-5678-9101-112131415164', 'COMMENT', 'This is inspiring, Diana!', '3a2b3c4d-3234-5678-9101-112131415163', '2024-10-10 15:30:00'),
-    ('5a2b3c4d-5555-5678-9101-112131415165', 'COMMENT', 'Eve, I\'ll try this recipe!', '4a2b3c4d-4234-5678-9101-112131415164', '2024-10-11 15:30:00');
 
 INSERT INTO postcrunch.comment (id, target_id) VALUES
     ('4a2b3c4d-6666-5678-9101-112131415164', '5a2b3c4d-eeee-5678-9101-112131415165'),
