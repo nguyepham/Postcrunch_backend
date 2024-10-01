@@ -108,6 +108,339 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /api/v1/user/{id}/posts:
+
+    get:
+      tags:
+        - post
+      description: Get all posts of a user.
+      operationId: getPostsByAuthorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: latest
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/user/{id}/comments:
+
+    get:
+      tags:
+        - comment
+      description: Get all comments of a user.
+      operationId: getCommentsByAuthorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: latest
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/user/{id}/votes:
+
+    get:
+      tags:
+        - vote
+      description: Get all votes of a user.
+      operationId: getVotesByAuthorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vote'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/user/{id}/reports:
+
+    get:
+      tags:
+        - report
+      description: Get all reports of a user.
+      operationId: getReportsByAuthorId
+      parameters:
+        - name: id
+          in: path
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/content/{id}/comments:
+
+    get:
+      tags:
+        - comment
+      description: Get all comments of a content.
+      operationId: getCommentsByTargetId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: latest
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/content/{id}/votes:
+
+    get:
+      tags:
+        - vote
+      description: Get all votes of a content.
+      operationId: getVotesByTargetId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vote'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/content/{id}/reports:
+
+    get:
+      tags:
+        - report
+      description: Get all reports of a content.
+      operationId: getReportsByTargetId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /api/v1/posts:
 
     post:
@@ -137,6 +470,50 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+    get:
+      tags:
+        - post
+      description: Get all posts on the newsfeed.
+      operationId: getNewsfeed
+      parameters:
+        - name: latest
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        200:
+          description: Fetch successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
     put:
       tags:
         - post
@@ -147,7 +524,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContentPreview'
+              $ref: '#/components/schemas/Post'
       responses:
         200:
           description: Update successfully.
@@ -255,7 +632,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContentPreview'
+              $ref: '#/components/schemas/Comment'
       responses:
         200:
           description: Update successfully.
@@ -344,36 +721,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Vote'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
-
-    get:
-      tags:
-        - vote
-      description: Get all votes.
-      operationId: getVotes
-      parameters:
-        - name: targetType
-          in: query
-          required: true
-          schema:
-            type: string
-            enum:
-              - POST
-              - COMMENT
-      responses:
-        200:
-          description: Fetch successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Comment'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -488,11 +835,6 @@ components:
         gender:
           type: string
           description: The user's gender.
-        posts:
-          type: array
-          description: The list of posts created by the user.
-          items:
-            $ref: '#/components/schemas/ContentPreview'
 
     Newsfeed:
       type: object
@@ -555,16 +897,6 @@ components:
           type: integer
           description: The number of reports made on the content.
           format: int32
-        votes:
-          type: array
-          description: List of votes made on a content.
-          items:
-            $ref: '#/components/schemas/Vote'
-        comments:
-          type: array
-          description: List of comments made on a content.
-          items:
-            $ref: '#/components/schemas/ContentPreview'
 
     Post:
       allOf:
@@ -582,7 +914,7 @@ components:
         - type: object
           description: A comment made on a content.
           properties:
-            target:
+            targetId:
               type: string
               description: TODO - Redesign the content models.
 
@@ -590,8 +922,9 @@ components:
       type: object
       description: A vote made on a post.
       required:
-        - author
-        - target
+        - voteType
+        - authorId
+        - targetId
       properties:
         id:
           type: string
@@ -608,8 +941,12 @@ components:
           format: date-time
         author:
           $ref: '#/components/schemas/AuthorInfo'
-        targetPreview:
-          $ref: '#/components/schemas/ContentPreview'
+        authorId:
+          type: string
+          description: The id of the user who created the vote.
+        targetId:
+          type: string
+          description: The id of the targeted content.
 
     Report:
       type: object
@@ -635,8 +972,12 @@ components:
           format: date-time
         author:
           $ref: '#/components/schemas/AuthorInfo'
-        targetPreview:
-          $ref: '#/components/schemas/ContentPreview'
+        authorId:
+          type: string
+          description: The id of the user who created the vote.
+        targetId:
+          type: string
+          description: The id of the targeted content.
 
     NewContent:
       type: object
@@ -667,59 +1008,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/NewContent'
         - type: object
-          required:
-            - authorId
           properties:
             targetId:
               type: string
               description: Info about the comment's target wrapped in the request.
-
-    ContentPreview:
-      type: object
-      description: The preview of a Postcrunch content.
-      required:
-        - id
-        - updatedAt
-      properties:
-        id:
-          type: string
-          description: The content's id.
-        contentType:
-          type: string
-          description: The type of this content.
-        createdAt:
-          type: string
-          description: The time the content was created.
-          format: date-time
-        updatedAt:
-          type: string
-          description: The last time the content was updated.
-          format: date-time
-        author:
-          $ref: '#/components/schemas/AuthorInfo'
-        edited:
-          type: boolean
-        text:
-          type: string
-          description: The text in the content.
-        numUpVotes:
-          type: integer
-          description: The number of up votes made on the content.
-          format: int32
-        numDownVotes:
-          type: integer
-          description: The number of down votes made on the content.
-          format: int32
-        numComments:
-          type: integer
-          description: The number of comments made on the content.
-          format: int32
-        title:
-          type: string
-          description: The title of the post.
-        targetId:
-          type: string
-          description: The id of the targeted content.
 
     ErrorResponse:
       type: object
