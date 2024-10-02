@@ -1,7 +1,6 @@
 package nguye.postcrunch.backend.user;
 
 import nguye.postcrunch.backend.api.UserApi;
-import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,7 @@ public class UserController implements UserApi {
 
   @Override
   public ResponseEntity<User> getUserById(String id) {
-    return service.getUserById(id).map(assembler::toModel)
-        .map(ResponseEntity::ok).orElseThrow(ResourceNotFoundException::new);
+    return ResponseEntity.ok(assembler.toModel(service.getUserById(id)));
   }
 
   @Override
@@ -39,6 +37,6 @@ public class UserController implements UserApi {
   @Override
   public ResponseEntity<Void> deleteUserById(String id) {
     service.deleteUserById(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.accepted().build();
   }
 }

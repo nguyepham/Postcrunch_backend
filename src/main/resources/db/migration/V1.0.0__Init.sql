@@ -44,16 +44,6 @@ CREATE TABLE IF NOT EXISTS postcrunch.vote (
     FOREIGN KEY (target_id) REFERENCES content(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS postcrunch.report (
-    id CHAR(36) PRIMARY KEY NOT NULL,
-    reason VARCHAR(16) NOT NULL DEFAULT 'OTHER',
-    created_at DATETIME DEFAULT NOW(),
-    author_id CHAR(36),
-    target_id CHAR(36) NOT NULL,
-    FOREIGN KEY (author_id) REFERENCES user(id) ON DELETE SET NULL,
-    FOREIGN KEY (target_id) REFERENCES content(id) ON DELETE CASCADE
-);
-
 -- Seeding users
 INSERT INTO postcrunch.user (id, username, password, first_name, last_name, email, dob, gender) VALUES
     ('1a2b3c4d-1234-5678-9101-112131415161', 'user1', 'password1', 'Alice', 'Smith', 'alice@example.com', '1990-01-01', 'F'),
@@ -99,8 +89,3 @@ INSERT INTO postcrunch.vote (id, vote_type, author_id, target_id) VALUES
     ('3a2b3c4d-8888-5678-9101-112131415163', 'UP', '4a2b3c4d-4234-5678-9101-112131415164', '3a2b3c4d-cccc-5678-9101-112131415163'),
     ('4a2b3c4d-9999-5678-9101-112131415164', 'UP', '3a2b3c4d-3234-5678-9101-112131415163', '4a2b3c4d-dddd-5678-9101-112131415164'),
     ('5a2b3c4d-aaaa-5678-9101-112131415165', 'DOWN', '5a2b3c4d-5234-5678-9101-112131415165', '5a2b3c4d-eeee-5678-9101-112131415165');
-
--- Seeding reports for content
-INSERT INTO postcrunch.report (id, reason, author_id, target_id) VALUES
-('1a2b3c4d-bbbb-5678-9101-112131415161', 'SPAM', '2a2b3c4d-2234-5678-9101-112131415162', '1a2b3c4d-aaaa-5678-9101-112131415161'),
-('2a2b3c4d-cccc-5678-9101-112131415162', 'OTHER', '1a2b3c4d-1234-5678-9101-112131415161', '5a2b3c4d-5555-5678-9101-112131415165');

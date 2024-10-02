@@ -1,14 +1,12 @@
 package nguye.postcrunch.backend.comment;
 
 import nguye.postcrunch.backend.api.CommentApi;
-import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.Comment;
 import nguye.postcrunch.backend.model.NewComment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class CommentController implements CommentApi {
@@ -28,8 +26,7 @@ public class CommentController implements CommentApi {
 
   @Override
   public ResponseEntity<Comment> getCommentById(String id) {
-    return Optional.of(service.getCommentById(id)).map(assembler::toModel)
-        .map(ResponseEntity::ok).orElseThrow(ResourceNotFoundException::new);
+    return ResponseEntity.ok(assembler.toModel(service.getCommentById(id)));
   }
 
   @Override
@@ -60,11 +57,11 @@ public class CommentController implements CommentApi {
   @Override
   public ResponseEntity<Void> deleteCommentById(String id) {
     service.deleteCommentById(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.accepted().build();
   }
 
   @Override
-  public ResponseEntity<Integer> getNumCommentsByTargetId(String id) throws Exception {
+  public ResponseEntity<Integer> getNumCommentsByTargetId(String id) {
     return ResponseEntity.ok(service.getNumCommentsByTargetId(id));
   }
 }

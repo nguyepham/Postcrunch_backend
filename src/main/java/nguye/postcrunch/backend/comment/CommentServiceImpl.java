@@ -33,9 +33,7 @@ public class CommentServiceImpl implements CommentService {
 
     CommentEntity entity = new CommentEntity(target);
 
-    entity.setAuthor(userService.getUserById(newComment.getAuthorId()).orElseThrow(
-        ResourceNotFoundException::new
-    ));
+    entity.setAuthor(userService.getUserById(newComment.getAuthorId()));
     entity.setText(newComment.getText());
 
     return repository.save(entity);

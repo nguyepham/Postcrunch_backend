@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,9 +30,7 @@ public class PostServiceImpl implements PostService {
 
     PostEntity entity = new PostEntity();
 
-    entity.setAuthor(userService.getUserById(newPost.getAuthorId()).orElseThrow(
-        ResourceNotFoundException::new
-    ));
+    entity.setAuthor(userService.getUserById(newPost.getAuthorId()));
     if (Objects.isNull(newPost.getTitle())) {
       entity.setTitle("No Title");
     } else {

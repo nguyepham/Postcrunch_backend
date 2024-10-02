@@ -5,7 +5,6 @@ import nguye.postcrunch.backend.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,16 +29,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Optional<UserEntity> getUserById(String id) {
-    return repository.findById(id);
+  public UserEntity getUserById(String id) {
+    return repository.findById(id).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Override
   public UserEntity updateUser(User updatedUser) {
 
-    UserEntity entity = repository.findById(updatedUser.getId()).orElseThrow(
-        ResourceNotFoundException::new
-    );
+    UserEntity entity = getUserById(updatedUser.getId());
 
     if (Objects.nonNull(updatedUser.getUsername())) {
       entity.setUsername(updatedUser.getUsername());

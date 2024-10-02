@@ -39,7 +39,7 @@ public class VoteController implements VoteApi {
   @Override
   public ResponseEntity<Void> deleteVoteById(String id) {
     service.deleteVoteById(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.accepted().build();
   }
 
   @Override

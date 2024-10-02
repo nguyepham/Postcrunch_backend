@@ -31,9 +31,7 @@ public class VoteServiceImpl implements VoteService {
 
     VoteEntity entity = new VoteEntity(newVote.getVoteType().toString(), target);
 
-    entity.setAuthor(userService.getUserById(newVote.getAuthorId()).orElseThrow(
-        ResourceNotFoundException::new
-    ));
+    entity.setAuthor(userService.getUserById(newVote.getAuthorId()));
 
     return repository.save(entity);
   }
