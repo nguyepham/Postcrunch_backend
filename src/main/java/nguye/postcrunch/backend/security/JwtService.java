@@ -5,39 +5,20 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import nguye.postcrunch.backend.util.VaultClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Objects;
+
+import static nguye.postcrunch.backend.security.Constants.JWT_SECRET_KEY;
 
 @Component
 public class JwtService {
 
   static final long EXPIRATION_TIME = 30 * 60 * 1000;
 
-  private final Algorithm algorithm = Algorithm.HMAC256(Objects.requireNonNull(JwtService.getVaultSecret("jwt_key")));
+  private final Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET_KEY);
 
-  public JwtService() throws Exception {}
-
-  // Get the JWT secret key from HCP Vault Secrets using API
-  public static String getVaultSecret(String name) throws Exception {
-
-    String resBodyString = VaultClient.makeApiGetRequest(name);
-    ObjectMapper mapper = new ObjectMapper();
-
-    try {
-      JsonNode rootNode = mapper.readTree(resBodyString);
-      JsonNode valueNode = rootNode.path("secret").path("version").path("value");
-      return valueNode.asText();
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-    return null;
-  }
+  public JwtService() {}
 
   // Generate a signed JWT token
   public String generateToken(String username)  {

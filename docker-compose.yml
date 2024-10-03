@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.1                         # Use the MySQL 8.0 image
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: secret             # Root password for MySQL
+      MYSQL_DATABASE: postcrunch              # Database name
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  springboot:
+    build: .                                  # Build Spring Boot image from Dockerfile in current directory
+    container_name: springboot_container
+    depends_on:
+      - mysql                                 # Ensure MySQL is started before Spring Boot
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/postcrunch   # Use the internal Docker network hostname `mysql`
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_FLYWAY_URL: jdbc:mysql://mysql:3306/postcrunch       # Flyway migration settings
+      SPRING_FLYWAY_USER: root
+      SPRING_FLYWAY_PASSWORD: secret
+    ports:
+      - "8081:8080"
+
+volumes:
+  mysql_data:
