@@ -1,6 +1,6 @@
 package nguye.postcrunch.backend.comment;
 
-import nguye.postcrunch.backend.AppUtil;
+import nguye.postcrunch.backend.util.AuthorInfoExtractor;
 import nguye.postcrunch.backend.model.Comment;
 import nguye.postcrunch.backend.post.PostController;
 import nguye.postcrunch.backend.vote.VoteService;
@@ -53,7 +53,7 @@ public class CommentRepresentationModelAssembler extends
         .contentType(Comment.ContentTypeEnum.COMMENT)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .author(AppUtil.extractAuthorInfo(entity.getAuthor()))
+        .author(AuthorInfoExtractor.extractAuthorInfo(entity.getAuthor()))
         .targetId(entity.getTarget().getId())
         .edited(!createdAt.equals(updatedAt))
         .numComments(service.getNumCommentsByTargetId(entity.getId()))

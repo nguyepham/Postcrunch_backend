@@ -6,8 +6,10 @@ import lombok.Getter;
 public enum AppError {
 
   GENERIC_ERROR("POSTCRUNCH-001", "The system is unable to complete the request."),
-  UNAUTHORIZED("POSTCRUNCH-002", "Please log in to complete the request."),
-  RESOURCE_NOT_FOUND("POSTCRUNCH-003", "Requested resource not found.");
+  BAD_REQUEST("POSTCRUNCH-002", "Bad request."),
+  UNAUTHORIZED("POSTCRUNCH-003", "Please log in to complete the request."),
+  RESOURCE_NOT_FOUND("POSTCRUNCH-004", "Requested resource not found."),
+  RESOURCE_ALREADY_EXISTS("POSTCRUNCH-005", "Resource already exists.");
 
   private final String code;
   private final String message;

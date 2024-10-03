@@ -9,12 +9,14 @@ info:
     email: nguyenminhpham24@gmail.com
 
 servers:
-  - url: https://github.com/nguyepham
+  - url: localhost:8080
     description: Development server
 
 tags:
+  - name: auth
+    description: CRUD operations with authentication.
   - name: user
-    description: Everything about users and accounts.
+    description: CRUD operations of a user with their own account.
   - name: post
     description: CRUD operations with a post.
   - name: comment
@@ -23,6 +25,85 @@ tags:
     description: CRUD operations with a vote.
 
 paths:
+  /api/v1/auth/signup:
+
+    post:
+      tags:
+        - auth
+      description: Create a new user account (sign up).
+      operationId: signUp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Sign up successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedInfo'
+
+  /api/v1/auth/token:
+
+    post:
+      tags:
+        - auth
+      description: Sign in a user.
+      operationId: signIn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInReq'
+      responses:
+        200:
+          description: Sign in successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedInfo'
+
+    delete:
+      tags:
+        - auth
+      description: Sign out a user.
+      operationId: signOut
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshToken'
+      responses:
+        202:
+          description: Sign out successfully.
+
+  /api/v1/auth/token/refresh:
+
+    post:
+      tags:
+        - auth
+      description: Provides JWT based on valid refresh token.
+      operationId: getAccessToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshToken'
+      responses:
+        200:
+          description: refresh successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedInfo'
+
+
   /api/v1/users:
 
     put:
@@ -43,14 +124,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/user/{id}:
 
@@ -72,14 +145,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
     delete:
       tags:
@@ -93,16 +158,8 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        202:
           description: Delete successfully.
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/user/{id}/posts:
 
@@ -146,14 +203,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Post'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/user/{id}/comments:
 
@@ -197,14 +246,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/user/{id}/votes:
 
@@ -242,14 +283,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Vote'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/content/{id}/comments:
 
@@ -293,14 +326,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/content/{id}/comments/count:
 
@@ -324,14 +349,6 @@ paths:
                 type: integer
                 description: The number of comments of a content.
                 format: int32
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/content/{id}/votes:
 
@@ -369,14 +386,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Vote'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/content/{id}/votes/count:
 
@@ -403,14 +412,6 @@ paths:
                   description: There are two elements in this array, one for each type of vote.
                   format: int32
 
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/posts:
 
@@ -432,14 +433,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
     get:
       tags:
@@ -447,11 +440,6 @@ paths:
       description: Get all posts on the newsfeed.
       operationId: getNewsfeed
       parameters:
-        - name: requestedAt
-          in: query
-          required: false
-          schema:
-            type: string
         - name: latest
           in: query
           required: false
@@ -472,6 +460,12 @@ paths:
             type: integer
             format: int32
             default: 5
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetNewsfeedReq'
       responses:
         200:
           description: Fetch successfully.
@@ -481,14 +475,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Post'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
     put:
       tags:
@@ -508,14 +494,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/post/{id}:
 
@@ -537,14 +515,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
     delete:
       tags:
@@ -558,16 +528,8 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        202:
           description: Delete successfully.
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/comments:
 
@@ -589,14 +551,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
     put:
       tags:
@@ -616,14 +570,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/comment/{id}:
 
@@ -645,14 +591,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
     delete:
       tags:
@@ -666,16 +604,8 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        202:
           description: Delete successfully.
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/votes:
 
@@ -697,14 +627,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Vote'
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   /api/v1/vote/{id}:
 
@@ -720,16 +642,8 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        202:
           description: Delete successfully.
-        400:
-          $ref: '#/components/responses/BadRequest'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
 components:
 
@@ -812,6 +726,23 @@ components:
         gender:
           type: string
           description: The user's gender.
+          
+    AuthenticatedInfo:
+      type: object
+      description: Signed-in user information
+      properties:
+        refreshToken:
+          type: string
+          description: Refresh Token.
+        accessToken:
+          type: string
+          description: JWT Token aka access token.
+        username:
+          type: string
+          description: The username of an account.
+        userId:
+          type: string
+          description: The id of a user.
 
     Newsfeed:
       type: object
@@ -924,6 +855,25 @@ components:
         targetId:
           type: string
           description: The id of the targeted content.
+          
+    SignInReq:
+      type: object
+      description: The request body for Sign-in.
+      properties: 
+        username:
+          type: string
+          description: The username of an account.
+        password:
+          type: string
+          description: The password of an account.
+
+    RefreshToken:
+      type: object
+      description: A refresh token keeps a user logged in, because an access token self-expires.
+      properties:
+        value:
+          type: string
+          description: The value of the refresh token.
 
     NewContent:
       type: object
@@ -958,6 +908,13 @@ components:
             targetId:
               type: string
               description: Info about the comment's target wrapped in the request.
+
+    GetNewsfeedReq:
+      type: object
+      description: We need the time when a request was made to send back an appropriate newsfeed.
+      properties:
+        requestedTime:
+          type: string
 
     ErrorResponse:
       type: object

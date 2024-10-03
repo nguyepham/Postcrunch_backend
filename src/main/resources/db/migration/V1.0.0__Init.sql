@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS postcrunch;
 CREATE TABLE IF NOT EXISTS postcrunch.user (
     id CHAR(36) PRIMARY KEY NOT NULL,
     username VARCHAR(16) UNIQUE NOT NULL,
-    password VARCHAR(40) NOT NULL,
+    password VARCHAR(128) NOT NULL,
     first_name VARCHAR(28),
     last_name VARCHAR(28),
     email VARCHAR(24),
@@ -46,11 +46,11 @@ CREATE TABLE IF NOT EXISTS postcrunch.vote (
 
 -- Seeding users
 INSERT INTO postcrunch.user (id, username, password, first_name, last_name, email, dob, gender) VALUES
-    ('1a2b3c4d-1234-5678-9101-112131415161', 'user1', 'password1', 'Alice', 'Smith', 'alice@example.com', '1990-01-01', 'F'),
-    ('2a2b3c4d-2234-5678-9101-112131415162', 'user2', 'password2', 'Bob', 'Johnson', 'bob@example.com', '1985-05-12', 'M'),
-    ('3a2b3c4d-3234-5678-9101-112131415163', 'user3', 'password3', 'Charlie', 'Brown', 'charlie@example.com', '1992-11-23', 'M'),
-    ('4a2b3c4d-4234-5678-9101-112131415164', 'user4', 'password4', 'Diana', 'Prince', 'diana@example.com', '1995-07-07', 'F'),
-    ('5a2b3c4d-5234-5678-9101-112131415165', 'user5', 'password5', 'Eve', 'Adams', 'eve@example.com', '1998-09-15', 'F');
+    ('1a2b3c4d-1234-5678-9101-112131415161', 'user1', '$2a$10$E08xiq6U7e5R27NwZ346x.LXcv6djyx8kViA5ullcMx8f.8f6gCqi', 'Alice', 'Smith', 'alice@example.com', '1990-01-01', 'F'),
+    ('2a2b3c4d-2234-5678-9101-112131415162', 'user2', '$2a$10$oYcpCdchv0ETkKeh5jbEl.HB4KIUxjZlUxlsk4zZfUXAtvbGxLz9i', 'Bob', 'Johnson', 'bob@example.com', '1985-05-12', 'M'),
+    ('3a2b3c4d-3234-5678-9101-112131415163', 'user3', '$2a$10$CG24x1qlEe36c4tQJZLI9u.E6FQwzZOPYGJjMHdxvrWONe.PaqjU2', 'Charlie', 'Brown', 'charlie@example.com', '1992-11-23', 'M'),
+    ('4a2b3c4d-4234-5678-9101-112131415164', 'user4', '$2a$10$xgRs0PECrlkp.Kyw9GQLj.ezvktxn7EM2GqAYIZVBWirhIQvwkM5.', 'Diana', 'Prince', 'diana@example.com', '1995-07-07', 'F'),
+    ('5a2b3c4d-5234-5678-9101-112131415165', 'user5', '$2a$10$g0qVxP3XPw/XAiLyNHWz0.8unOqxhdY23T1YzyIpj.6Uvsy9f7zYS', 'Eve', 'Adams', 'eve@example.com', '1998-09-15', 'F');
 
 -- Seeding posts (content_type = 'POST')
 INSERT INTO postcrunch.content (id, content_type, text, author_id, updated_at) VALUES

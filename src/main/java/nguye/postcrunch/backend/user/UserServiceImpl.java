@@ -2,6 +2,7 @@ package nguye.postcrunch.backend.user;
 
 import nguye.postcrunch.backend.exception.ResourceNotFoundException;
 import nguye.postcrunch.backend.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -10,20 +11,35 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository repository;
+  private final PasswordEncoder passwordEncoder;
 
-  public UserServiceImpl(UserRepository repository) {
+  public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
     this.repository = repository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
   public UserEntity toEntity(User user) {
-    UserEntity entity = new UserEntity(user.getUsername(), user.getPassword());
+    UserEntity entity = new UserEntity(
+        user.getUsername(),
+        passwordEncoder.encode(user.getPassword())
+    );
 
-    entity.setFirstName(user.getFirstName());
-    entity.setLastName(user.getLastName());
-    entity.setEmail(user.getEmail());
-    entity.setDob(new java.sql.Date(user.getDob().getTime()));
-    entity.setGender(user.getGender());
+    if (Objects.nonNull(user.getFirstName())) {
+      entity.setFirstName(user.getFirstName());
+    }
+    if (Objects.nonNull(user.getLastName())) {
+      entity.setLastName(user.getLastName());
+    }
+    if (Objects.nonNull(user.getEmail())) {
+      entity.setEmail(user.getEmail());
+    }
+    if (Objects.nonNull(user.getDob())) {
+      entity.setDob(new java.sql.Date(user.getDob().getTime()));
+    }
+    if (Objects.nonNull(user.getGender())) {
+      entity.setGender(user.getGender());
+    }
 
     return entity;
   }

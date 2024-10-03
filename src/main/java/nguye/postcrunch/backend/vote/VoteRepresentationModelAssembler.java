@@ -1,6 +1,6 @@
 package nguye.postcrunch.backend.vote;
 
-import nguye.postcrunch.backend.AppUtil;
+import nguye.postcrunch.backend.util.AuthorInfoExtractor;
 import nguye.postcrunch.backend.comment.CommentController;
 import nguye.postcrunch.backend.model.Vote;
 import nguye.postcrunch.backend.post.PostController;
@@ -40,7 +40,7 @@ public class VoteRepresentationModelAssembler extends
         .id(entity.getId())
         .voteType(Vote.VoteTypeEnum.valueOf(entity.getVoteType()))
         .createdAt(entity.getCreatedAt())
-        .author(AppUtil.extractAuthorInfo(entity.getAuthor()))
+        .author(AuthorInfoExtractor.extractAuthorInfo(entity.getAuthor()))
         .authorId(entity.getAuthor().getId())
         .targetId(entity.getTarget().getId());
   }

@@ -1,4 +1,4 @@
-package nguye.postcrunch.backend;
+package nguye.postcrunch.backend.util;
 
 import nguye.postcrunch.backend.model.*;
 import nguye.postcrunch.backend.user.UserController;
@@ -9,7 +9,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class AppUtil {
+public class AuthorInfoExtractor {
 
   public static AuthorInfo extractAuthorInfo(UserEntity entity) {
     AuthorInfo info = new AuthorInfo();

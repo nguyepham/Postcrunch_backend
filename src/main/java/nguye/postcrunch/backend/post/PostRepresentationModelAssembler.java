@@ -1,6 +1,6 @@
 package nguye.postcrunch.backend.post;
 
-import nguye.postcrunch.backend.AppUtil;
+import nguye.postcrunch.backend.util.AuthorInfoExtractor;
 import nguye.postcrunch.backend.comment.CommentService;
 import nguye.postcrunch.backend.model.Post;
 import nguye.postcrunch.backend.vote.VoteService;
@@ -38,7 +38,7 @@ public class PostRepresentationModelAssembler extends
     Timestamp updatedAt = entity.getUpdatedAt();
 
     if (Objects.nonNull(entity.getAuthor())) {
-      resource.setAuthor(AppUtil.extractAuthorInfo(entity.getAuthor()));
+      resource.setAuthor(AuthorInfoExtractor.extractAuthorInfo(entity.getAuthor()));
     }
 
     List<Integer> numVotes = voteService.getNumVotesByTargetId(entity.getId());
