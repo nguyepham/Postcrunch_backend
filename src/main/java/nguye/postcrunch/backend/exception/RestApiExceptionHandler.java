@@ -4,7 +4,6 @@ import nguye.postcrunch.backend.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -50,23 +49,12 @@ public class RestApiExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(UsernameNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(Exception ex) {
-    // ex.printStackTrace();
-    ErrorResponse error = new ErrorResponse()
-        .errorCode(AppError.RESOURCE_NOT_FOUND.getCode())
-        .message("User not found")
-        .httpStatus(HttpStatus.NOT_FOUND.value());
-
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-  }
-
   @ExceptionHandler(BadCredentialException.class)
   public ResponseEntity<ErrorResponse> handleBadCredentialException(Exception ex) {
     // ex.printStackTrace();
     ErrorResponse error = new ErrorResponse()
         .errorCode(AppError.UNAUTHORIZED.getCode())
-        .message("Try another username or password.")
+        .message(ex.getMessage())
         .httpStatus(HttpStatus.UNAUTHORIZED.value());
 
     return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);

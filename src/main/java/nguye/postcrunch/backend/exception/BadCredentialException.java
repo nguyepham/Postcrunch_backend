@@ -8,6 +8,6 @@ public class BadCredentialException extends RuntimeException {
   public BadCredentialException(final String message) {
     super(message);
     this.code = AppError.UNAUTHORIZED.getCode();
-    this.message = AppError.UNAUTHORIZED.getMessage();
+    this.message = message;
   }
 }

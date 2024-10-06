@@ -855,7 +855,7 @@ components:
           type: string
           description: The id of the targeted content.
 
-    AuthPrincipal:
+    AuthCredential:
       type: object
       description: This object encapsulates the username and password, which is used to create an authentication token required by Spring Security.
       required:

@@ -5,7 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nguye.postcrunch.backend.exception.InvalidAccessTokenException;
-import nguye.postcrunch.backend.model.AuthPrincipal;
+import nguye.postcrunch.backend.model.AuthCredential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,8 @@ import java.util.Objects;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     private final JwtService jwtService;
 
@@ -38,7 +42,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null) {
             // Extract the username from the JWT carried in the Authorization header of the incoming request.
             // If the token is valid, store the info about the authenticated user to the security context.
-            AuthPrincipal principal = jwtService.verifyAuthPrincipal(request);
+            AuthCredential principal = jwtService.verifyAuthPrincipal(request);
 
             if (Objects.isNull(principal)) {
                 throw new InvalidAccessTokenException("Invalid access token.");

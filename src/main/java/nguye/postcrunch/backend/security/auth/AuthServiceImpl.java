@@ -1,11 +1,9 @@
 package nguye.postcrunch.backend.security.auth;
 
+import nguye.postcrunch.backend.exception.BadCredentialException;
 import nguye.postcrunch.backend.exception.GenericAlreadyExistsException;
 import nguye.postcrunch.backend.exception.InvalidRefreshTokenException;
-import nguye.postcrunch.backend.model.AuthPrincipal;
-import nguye.postcrunch.backend.model.AuthenticatedInfo;
-import nguye.postcrunch.backend.model.RefreshToken;
-import nguye.postcrunch.backend.model.User;
+import nguye.postcrunch.backend.model.*;
 import nguye.postcrunch.backend.security.JwtService;
 import nguye.postcrunch.backend.security.UserTokenEntity;
 import nguye.postcrunch.backend.security.UserTokenRepository;
@@ -13,7 +11,6 @@ import nguye.postcrunch.backend.user.UserEntity;
 import nguye.postcrunch.backend.user.UserRepository;
 import nguye.postcrunch.backend.user.UserService;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
   private AuthenticatedInfo createAuthenticatedInfo(UserEntity entity) {
 
-    AuthPrincipal principal = new AuthPrincipal(entity.getUsername(), entity.getPassword());
+    AuthCredential principal = new AuthCredential(entity.getUsername(), entity.getPassword());
     String jwt = jwtService.generateToken(principal);
 
     return new AuthenticatedInfo()
@@ -72,11 +69,11 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public UserEntity getUserByUsername(String username) {
     if (Strings.isBlank(username)) {
-      throw new UsernameNotFoundException("Invalid username.");
+      throw new BadCredentialException("Invalid password or username.");
     }
     final String name = username.trim();
     return userRepository.findByUsername(name).orElseThrow(
-        () -> new UsernameNotFoundException("The requested user not found.")
+        () -> new BadCredentialException("Invalid password or username.")
     );
   }
 

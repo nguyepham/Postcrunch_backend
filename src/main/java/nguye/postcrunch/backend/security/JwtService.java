@@ -6,7 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.http.HttpServletRequest;
-import nguye.postcrunch.backend.model.AuthPrincipal;
+import nguye.postcrunch.backend.model.AuthCredential;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class JwtService {
   public JwtService() {}
 
   // Generate a signed JWT token
-  public String generateToken(AuthPrincipal principal)  {
+  public String generateToken(AuthCredential principal)  {
 
     return JWT.create()
         .withIssuer("Postcrunch social media platform")
@@ -37,7 +37,7 @@ public class JwtService {
   }
 
   // Get a token from the request, verify the token, and get the username
-  public AuthPrincipal verifyAuthPrincipal(HttpServletRequest request) {
+  public AuthCredential verifyAuthPrincipal(HttpServletRequest request) {
 
     String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -55,7 +55,7 @@ public class JwtService {
           .build();
       DecodedJWT decoded = verifier.verify(token);
 
-      return new AuthPrincipal(
+      return new AuthCredential(
           decoded.getClaims().get("username").asString(),
           decoded.getClaims().get("password").asString()
       );

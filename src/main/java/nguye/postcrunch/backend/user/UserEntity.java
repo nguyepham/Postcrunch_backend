@@ -3,6 +3,7 @@ package nguye.postcrunch.backend.user;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import nguye.postcrunch.backend.comment.CommentEntity;
 import nguye.postcrunch.backend.post.PostEntity;
 import nguye.postcrunch.backend.vote.VoteEntity;
 
@@ -42,6 +43,9 @@ public class UserEntity {
 
   @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
   private List<PostEntity> posts;
+
+  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+  private List<CommentEntity> comments;
 
   @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
   private List<VoteEntity> votes;
