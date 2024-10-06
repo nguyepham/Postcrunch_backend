@@ -33,6 +33,8 @@ public class PostRepresentationModelAssembler extends
   public Post toModel(PostEntity entity) {
     Post resource = new Post();
     resource.add(linkTo(methodOn(PostController.class).getPostById(entity.getId())).withSelfRel());
+    resource.add(linkTo(methodOn(PostController.class).updatePost(null)).withRel("update"));
+    resource.add(linkTo(methodOn(PostController.class).deletePostById(entity.getId())).withRel("delete"));
 
     Timestamp createdAt = entity.getCreatedAt();
     Timestamp updatedAt = entity.getUpdatedAt();

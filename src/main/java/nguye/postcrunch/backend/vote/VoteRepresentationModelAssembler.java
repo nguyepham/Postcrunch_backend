@@ -27,6 +27,8 @@ public class VoteRepresentationModelAssembler extends
   public Vote toModel(VoteEntity entity) {
     Vote resource = new Vote();
 
+    resource.add(linkTo(methodOn(VoteController.class).deleteVoteById(entity.getId())).withRel("delete"));
+
     switch (entity.getTarget().getContentType()) {
       case "POST" -> resource.add(
           linkTo(methodOn(PostController.class)

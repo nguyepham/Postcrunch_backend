@@ -112,7 +112,6 @@ paths:
       description: Edit user info.
       operationId: updateUser
       requestBody:
-        required: true
         content:
           application/json:
             schema:

@@ -33,6 +33,8 @@ public class CommentRepresentationModelAssembler extends
   public Comment toModel(CommentEntity entity) {
     Comment resource = new Comment();
     resource.add(linkTo(methodOn(CommentController.class).getCommentById(entity.getId())).withSelfRel());
+    resource.add(linkTo(methodOn(CommentController.class).updateComment(null)).withRel("update"));
+    resource.add(linkTo(methodOn(CommentController.class).deleteCommentById(entity.getId())).withRel("delete"));
 
     switch (entity.getTarget().getContentType()) {
       case "POST" -> resource.add(
