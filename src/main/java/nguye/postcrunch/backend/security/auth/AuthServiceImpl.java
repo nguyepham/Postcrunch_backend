@@ -2,6 +2,7 @@ package nguye.postcrunch.backend.security.auth;
 
 import nguye.postcrunch.backend.exception.GenericAlreadyExistsException;
 import nguye.postcrunch.backend.exception.InvalidRefreshTokenException;
+import nguye.postcrunch.backend.model.AuthPrincipal;
 import nguye.postcrunch.backend.model.AuthenticatedInfo;
 import nguye.postcrunch.backend.model.RefreshToken;
 import nguye.postcrunch.backend.model.User;
@@ -37,7 +38,9 @@ public class AuthServiceImpl implements AuthService {
   }
 
   private AuthenticatedInfo createAuthenticatedInfo(UserEntity entity) {
-    String jwt = jwtService.generateToken(entity.getUsername());
+
+    AuthPrincipal principal = new AuthPrincipal(entity.getUsername(), entity.getPassword());
+    String jwt = jwtService.generateToken(principal);
 
     return new AuthenticatedInfo()
         .username(entity.getUsername())
@@ -51,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
     public static String randomKey(int length) {
       return String.format(
               "%" + length + "s", new BigInteger(length * 5 /*base 32,2^5*/, random).toString(32))
-          .replace('\u0020', '0');
+          .replace(' ', '0');
     }
   }
 

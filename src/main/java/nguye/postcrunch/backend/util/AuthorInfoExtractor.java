@@ -3,12 +3,10 @@ package nguye.postcrunch.backend.util;
 import nguye.postcrunch.backend.model.*;
 import nguye.postcrunch.backend.user.UserController;
 import nguye.postcrunch.backend.user.UserEntity;
-import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Component
 public class AuthorInfoExtractor {
 
   public static AuthorInfo extractAuthorInfo(UserEntity entity) {

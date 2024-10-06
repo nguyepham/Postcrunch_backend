@@ -5,9 +5,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.servlet.http.HttpServletRequest;
+import nguye.postcrunch.backend.model.AuthPrincipal;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Component
 public class JwtService {
@@ -19,30 +23,42 @@ public class JwtService {
   public JwtService() {}
 
   // Generate a signed JWT token
-  public String generateToken(String username)  {
+  public String generateToken(AuthPrincipal principal)  {
 
     return JWT.create()
         .withIssuer("Postcrunch social media platform")
-        .withSubject(username)
-        .withClaim("des", "user_credit")
+        .withSubject("Postcrunch access token")
+        .withClaim("des", "user's authentication principal")
+        .withClaim("username", principal.getUsername())
+        .withClaim("password", principal.getPassword())
         .withIssuedAt(new Date())
         .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
         .sign(algorithm);
   }
 
   // Get a token from the request, verify the token, and get the username
-  public String verifyAndGetUser(String header) {
+  public AuthPrincipal verifyAuthPrincipal(HttpServletRequest request) {
 
-    String token = header.substring(7);
+    String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
+    if (Objects.isNull(authHeader)) {
+      return null;
+    }
+
+    String token = authHeader.substring(7);
     try {
+
       JWTVerifier verifier = JWT.require(algorithm)
           .withIssuer("Postcrunch social media platform")
-          .withClaim("des", "user_credit")
+          .withSubject("Postcrunch access token")
+          .withClaim("des", "user's authentication principal")
           .build();
-
       DecodedJWT decoded = verifier.verify(token);
-      return decoded.getSubject();
+
+      return new AuthPrincipal(
+          decoded.getClaims().get("username").asString(),
+          decoded.getClaims().get("password").asString()
+      );
 
     } catch (JWTVerificationException e) {
       System.out.println("Invalid JWT: " + e.getMessage());

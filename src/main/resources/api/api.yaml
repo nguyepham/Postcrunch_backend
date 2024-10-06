@@ -854,7 +854,21 @@ components:
         targetId:
           type: string
           description: The id of the targeted content.
-          
+
+    AuthPrincipal:
+      type: object
+      description: This object encapsulates the username and password, which is used to create an authentication token required by Spring Security.
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: The username provided by the user when signing in.
+        password:
+          type: string
+          description: The password provided by the user when signing in.
+
     SignInReq:
       type: object
       description: The request body for Sign-in.
