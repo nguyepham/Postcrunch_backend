@@ -9,14 +9,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static nguye.postcrunch.backend.security.Constants.JWT_SECRET_KEY;
-
 @Component
 public class JwtService {
 
   static final long EXPIRATION_TIME = 30 * 60 * 1000;
 
-  private final Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET_KEY);
+  private final Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET_KEY"));
 
   public JwtService() {}
 
