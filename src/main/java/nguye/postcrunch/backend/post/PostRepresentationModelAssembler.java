@@ -29,12 +29,15 @@ public class PostRepresentationModelAssembler extends
     this.commentService = commentService;
   }
 
+  public Post toAuthorizedModel(PostEntity entity) {
+    return toModel(entity)
+        .add(linkTo(methodOn(PostController.class).updatePost(null)).withRel("update"))
+        .add(linkTo(methodOn(PostController.class).deletePostById(entity.getId())).withRel("delete"));
+  }
+
   @Override
   public Post toModel(PostEntity entity) {
     Post resource = new Post();
-    resource.add(linkTo(methodOn(PostController.class).getPostById(entity.getId())).withSelfRel());
-    resource.add(linkTo(methodOn(PostController.class).updatePost(null)).withRel("update"));
-    resource.add(linkTo(methodOn(PostController.class).deletePostById(entity.getId())).withRel("delete"));
 
     Timestamp createdAt = entity.getCreatedAt();
     Timestamp updatedAt = entity.getUpdatedAt();
@@ -46,6 +49,7 @@ public class PostRepresentationModelAssembler extends
     List<Integer> numVotes = voteService.getNumVotesByTargetId(entity.getId());
 
     return resource
+        .add(linkTo(methodOn(PostController.class).getPostById(entity.getId())).withSelfRel())
         .id(entity.getId())
         .contentType(Post.ContentTypeEnum.POST)
         .createdAt(createdAt)
@@ -56,6 +60,14 @@ public class PostRepresentationModelAssembler extends
         .numUpVotes(numVotes.get(0))
         .numDownVotes(numVotes.get(1))
         .text(entity.getText());
+  }
+
+  public List<Post> toAuthorizedListModel(Iterable<PostEntity> entities) {
+    if (Objects.isNull(entities)) {
+      return List.of();
+    }
+    return StreamSupport.stream(entities.spliterator(), false).map(this::toAuthorizedModel)
+        .collect(toList());
   }
 
   public List<Post> toListModel(Iterable<PostEntity> entities) {

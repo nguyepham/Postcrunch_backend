@@ -15,15 +15,19 @@ public class UserRepresentationModelAssembler extends
     super(UserController.class, User.class);
   }
 
+  public User toAuthorizedModel(UserEntity entity) {
+
+    return toModel(entity)
+        .add(linkTo(methodOn(UserController.class).updateUser(null)).withRel("update"))
+        .add(linkTo(methodOn(UserController.class).deleteUserById(entity.getId())).withRel("delete"));
+  }
+
   @Override
   public User toModel(UserEntity entity) {
     User resource = new User();
 
-    resource.add(linkTo(methodOn(UserController.class).getUserById(entity.getId())).withSelfRel());
-    resource.add(linkTo(methodOn(UserController.class).updateUser(null)).withRel("update"));
-    resource.add(linkTo(methodOn(UserController.class).deleteUserById(entity.getId())).withRel("delete"));
-
     return resource
+        .add(linkTo(methodOn(UserController.class).getUserById(entity.getId())).withSelfRel())
         .id(entity.getId())
         .username(entity.getUsername())
         .password(entity.getPassword())

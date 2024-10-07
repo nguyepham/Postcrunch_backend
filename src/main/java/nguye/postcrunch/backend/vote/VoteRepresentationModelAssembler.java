@@ -23,11 +23,14 @@ public class VoteRepresentationModelAssembler extends
     super(VoteController.class, Vote.class);
   }
 
+  public Vote toAuthorizedModel(VoteEntity entity) {
+    return toModel(entity)
+        .add(linkTo(methodOn(VoteController.class).deleteVoteById(entity.getId())).withRel("delete"));
+  }
+
   @Override
   public Vote toModel(VoteEntity entity) {
     Vote resource = new Vote();
-
-    resource.add(linkTo(methodOn(VoteController.class).deleteVoteById(entity.getId())).withRel("delete"));
 
     switch (entity.getTarget().getContentType()) {
       case "POST" -> resource.add(
@@ -45,6 +48,14 @@ public class VoteRepresentationModelAssembler extends
         .author(AuthorInfoExtractor.extractAuthorInfo(entity.getAuthor()))
         .authorId(entity.getAuthor().getId())
         .targetId(entity.getTarget().getId());
+  }
+
+  public List<Vote> toAuthorizedListModel(Iterable<VoteEntity> entities) {
+    if (Objects.isNull(entities)) {
+      return List.of();
+    }
+    return StreamSupport.stream(entities.spliterator(), false).map(this::toAuthorizedModel)
+        .collect(toList());
   }
 
   public List<Vote> toListModel(Iterable<VoteEntity> entities) {

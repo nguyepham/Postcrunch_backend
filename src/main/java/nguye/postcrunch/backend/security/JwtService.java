@@ -16,7 +16,7 @@ import java.util.Objects;
 @Component
 public class JwtService {
 
-  static final long EXPIRATION_TIME = 30 * 60 * 1000;
+  static final long EXPIRATION_TIME = 15 * 60 * 1000;
 
   private final Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET_KEY"));
 

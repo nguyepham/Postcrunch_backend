@@ -29,12 +29,15 @@ public class CommentRepresentationModelAssembler extends
     this.voteService = voteService;
   }
 
+  public Comment toAuthorizedModel(CommentEntity entity) {
+    return toModel(entity)
+        .add(linkTo(methodOn(CommentController.class).updateComment(null)).withRel("update"))
+        .add(linkTo(methodOn(CommentController.class).deleteCommentById(entity.getId())).withRel("delete"));
+  }
+
   @Override
   public Comment toModel(CommentEntity entity) {
     Comment resource = new Comment();
-    resource.add(linkTo(methodOn(CommentController.class).getCommentById(entity.getId())).withSelfRel());
-    resource.add(linkTo(methodOn(CommentController.class).updateComment(null)).withRel("update"));
-    resource.add(linkTo(methodOn(CommentController.class).deleteCommentById(entity.getId())).withRel("delete"));
 
     switch (entity.getTarget().getContentType()) {
       case "POST" -> resource.add(
@@ -51,6 +54,7 @@ public class CommentRepresentationModelAssembler extends
     Timestamp updatedAt = entity.getUpdatedAt();
 
     return resource
+        .add(linkTo(methodOn(CommentController.class).getCommentById(entity.getId())).withSelfRel())
         .id(entity.getId())
         .contentType(Comment.ContentTypeEnum.COMMENT)
         .createdAt(createdAt)
@@ -62,6 +66,14 @@ public class CommentRepresentationModelAssembler extends
         .numUpVotes(numVotes.get(0))
         .numDownVotes(numVotes.get(1))
         .text(entity.getText());
+  }
+
+  public List<Comment> toAuthorizedListModel(Iterable<CommentEntity> entities) {
+    if (Objects.isNull(entities)) {
+      return List.of();
+    }
+    return StreamSupport.stream(entities.spliterator(), false).map(this::toAuthorizedModel)
+        .collect(toList());
   }
 
   public List<Comment> toListModel(Iterable<CommentEntity> entities) {
